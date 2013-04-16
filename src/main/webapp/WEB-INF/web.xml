@@ -8,17 +8,17 @@
   <!-- Servlets -->
   <servlet>
     <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.phideltcmu.server.GreetingServiceImpl</servlet-class>
+    <servlet-class>com.phideltcmu.recruiter.server.GreetingServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
     <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/recruiter/greet</url-pattern>
+    <url-pattern>/dynamicrecruiter/greet</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>
-    <welcome-file>recruiter.html</welcome-file>
+    <welcome-file>DynamicRecruiter.html</welcome-file>
   </welcome-file-list>
 
 </web-app>

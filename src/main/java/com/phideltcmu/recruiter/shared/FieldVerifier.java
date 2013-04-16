@@ -1,4 +1,4 @@
-package com.phideltcmu.shared;
+package com.phideltcmu.recruiter.shared;
 
 /**
  * <p>

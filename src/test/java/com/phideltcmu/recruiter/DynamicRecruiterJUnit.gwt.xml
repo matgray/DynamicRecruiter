@@ -7,9 +7,9 @@
   "http://google-web-toolkit.googlecode.com/svn/tags/2.5.0/distro-source/core/src/gwt-module.dtd">
 <module>
   <!-- Inherit our applications main module.                      -->
-  <inherits name='com.phideltcmu.recruiter'/>
+  <inherits name='com.phideltcmu.recruiter.DynamicRecruiter'/>
 
   <!-- Specify the path to any remote services.                   -->
-  <servlet path="/recruiter/greet" class="com.phideltcmu.server.GreetingServiceImpl" />
+  <servlet path="/dynamicrecruiter/greet" class="com.phideltcmu.recruiter.server.GreetingServiceImpl" />
 
 </module>

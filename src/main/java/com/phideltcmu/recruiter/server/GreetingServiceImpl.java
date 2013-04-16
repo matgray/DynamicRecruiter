@@ -1,7 +1,7 @@
-package com.phideltcmu.server;
+package com.phideltcmu.recruiter.server;
 
-import com.phideltcmu.client.GreetingService;
-import com.phideltcmu.shared.FieldVerifier;
+import com.phideltcmu.recruiter.client.GreetingService;
+import com.phideltcmu.recruiter.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
