@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- POM file generated with GWT webAppCreator -->
@@ -9,7 +9,7 @@
   <packaging>war</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>com.phideltcmu.recruiter.DynamicRecruiter</name>
-  
+
   <properties>
     <!-- Convenience property to set the GWT version -->
     <gwtVersion>2.5.0</gwtVersion>
@@ -56,14 +56,24 @@
       <classifier>sources</classifier>
       <scope>provided</scope>
     </dependency>
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>5.1.23</version>
+      </dependency>
+      <dependency>
+          <groupId>com.unboundid</groupId>
+          <artifactId>unboundid-ldapsdk</artifactId>
+          <version>1.1.3</version>
+      </dependency>
   </dependencies>
-  
+
   <build>
-    <!-- Generate compiled stuff in the folder used for developing mode --> 
+    <!-- Generate compiled stuff in the folder used for developing mode -->
     <outputDirectory>target/www/WEB-INF/classes</outputDirectory>
-    
+
     <plugins>
-      
+
       <!-- GWT Maven Plugin-->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -86,7 +96,7 @@
             <version>${gwtVersion}</version>
           </dependency>
 	</dependencies>
-        <!-- JS is only needed in the package phase, this speeds up testing --> 
+        <!-- JS is only needed in the package phase, this speeds up testing -->
         <executions>
           <execution>
             <phase>prepare-package</phase>
@@ -95,8 +105,8 @@
             </goals>
           </execution>
         </executions>
-        <!-- Plugin configuration. There are many available options, 
-             see gwt-maven-plugin documentation at codehaus.org --> 
+        <!-- Plugin configuration. There are many available options,
+             see gwt-maven-plugin documentation at codehaus.org -->
         <configuration>
           <!-- URL that should be automatically opened in the GWT shell (gwt:run). -->
           <runTarget>DynamicRecruiter.html</runTarget>
@@ -119,7 +129,7 @@
           <useManifestOnlyJar>false</useManifestOnlyJar>
           <forkMode>always</forkMode>
 
-          <!-- Folder for generated testing stuff --> 
+          <!-- Folder for generated testing stuff -->
           <systemProperties>
             <property>
               <name>gwt.args</name>
@@ -128,7 +138,7 @@
           </systemProperties>
         </configuration>
       </plugin>
-      
+
       <!-- Copy static web files before executing gwt:run -->
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
