@@ -13,7 +13,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 @SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements
         GreetingService {
-    private ApplicationContext context = new ClassPathXmlApplicationContext("/amzaws/Spring-Module.xml");
+    private ApplicationContext context = new ClassPathXmlApplicationContext("/spring/Spring-Module.xml");
 
     private RecruitListDao recruitListDao = (RecruitListDao) context.getBean("recruitListDao");
 
