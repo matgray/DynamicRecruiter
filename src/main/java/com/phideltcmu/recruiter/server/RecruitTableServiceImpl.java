@@ -1,7 +1,7 @@
 package com.phideltcmu.recruiter.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
-import com.phideltcmu.recruiter.client.GreetingService;
+import com.phideltcmu.recruiter.client.RecruitTableService;
 import com.phideltcmu.recruiter.server.dao.RecruitListDao;
 import com.phideltcmu.recruiter.shared.FieldVerifier;
 import org.springframework.context.ApplicationContext;
@@ -11,8 +11,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * The server side implementation of the RPC service.
  */
 @SuppressWarnings("serial")
-public class GreetingServiceImpl extends RemoteServiceServlet implements
-        GreetingService {
+public class RecruitTableServiceImpl extends RemoteServiceServlet implements
+        RecruitTableService {
     private ApplicationContext context = new ClassPathXmlApplicationContext("/spring/Spring-Module.xml");
 
     private RecruitListDao recruitListDao = (RecruitListDao) context.getBean("recruitListDao");
