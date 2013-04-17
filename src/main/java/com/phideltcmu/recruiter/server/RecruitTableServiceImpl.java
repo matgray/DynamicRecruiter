@@ -3,9 +3,11 @@ package com.phideltcmu.recruiter.server;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.phideltcmu.recruiter.client.RecruitTableService;
 import com.phideltcmu.recruiter.server.dao.RecruitListDao;
-import com.phideltcmu.recruiter.shared.FieldVerifier;
+import com.phideltcmu.recruiter.shared.model.Person;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.List;
 
 /**
  * The server side implementation of the RPC service.
@@ -16,29 +18,6 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     private ApplicationContext context = new ClassPathXmlApplicationContext("/spring/Spring-Module.xml");
 
     private RecruitListDao recruitListDao = (RecruitListDao) context.getBean("recruitListDao");
-
-    public String greetServer(String input) throws IllegalArgumentException {
-        // Verify that the input is valid.
-        if (!FieldVerifier.isValidName(input)) {
-            // If the input is not valid, throw an IllegalArgumentException back to
-            // the client.
-            throw new IllegalArgumentException(
-                    "Name must be at least 4 characters long");
-        }
-
-        String serverInfo = getServletContext().getServerInfo();
-        String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-
-        // Escape data from the client to avoid cross-site script vulnerabilities.
-        input = escapeHtml(input);
-        userAgent = escapeHtml(userAgent);
-
-        recruitListDao.create("foo", "bar", "foobar");
-        recruitListDao.selectAll();
-
-        return "Hello, " + input + "!<br><br>I am running " + serverInfo
-                + ".<br><br>It looks like you are using:<br>" + userAgent;
-    }
 
     /**
      * Escape an html string. Escaping data received from the client helps to
@@ -53,5 +32,16 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         }
         return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(
                 ">", "&gt;");
+    }
+
+    @Override
+    public List<Person> getRecruitList() {
+        return recruitListDao.selectAll();
+    }
+
+    @Override
+    public boolean addPerson(Person p) {
+        recruitListDao.create(p.getFirstName(), p.getLastName(), p.getAndrewID());
+        return true;
     }
 }

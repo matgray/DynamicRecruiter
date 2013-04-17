@@ -31,7 +31,7 @@ public class RecruitListDao implements IDao {
     @Override
     public List<Person> selectAll() {
         JdbcTemplate select = new JdbcTemplate(dataSource);
-        return select.query("SELECT firstname, lastname FROM recruitList.infolist",
+        return select.query("SELECT * FROM recruitList.infolist",
                 new PersonRowMapper());
     }
 

@@ -1,8 +1,18 @@
 package com.phideltcmu.recruiter.shared.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Person {
+public class Person implements Serializable {
+    public Person() {
+    }
+
+    public Person(String firstName, String lastName, String andrewID) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.andrewID = andrewID;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -75,4 +85,5 @@ public class Person {
     private Date classYear;
     private String recommencedBy;
     private String status;
+
 }

@@ -7,11 +7,23 @@
 package com.phideltcmu.recruiter.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
+import com.phideltcmu.recruiter.shared.model.Person;
+
+import java.util.List;
 
 /**
  * Event for when a client creates a game
  */
 public class RecruitTableFetchedEvent extends GwtEvent<RecruitTableFetchedEventHandler> {
+    List<Person> personList;
+
+    public List<Person> getPersonList() {
+        return personList;
+    }
+
+    public RecruitTableFetchedEvent(List<Person> list) {
+        this.personList = list;
+    }
 
     public static final Type<RecruitTableFetchedEventHandler> TYPE =
             new Type<RecruitTableFetchedEventHandler>();
