@@ -17,13 +17,10 @@ public class PersonResultSetExtractor implements ResultSetExtractor {
         person.setAndrewID(rs.getString(3));
         person.setPhoneNumber(rs.getString(4));
         person.setMajor(rs.getString(5));
-        person.setClassYear(rs.getDate(6));
-        /**
-         * Notes go here (7)
-         */
+        person.setClassYear(rs.getString(6));
+        person.setNotes(rs.getString(7));
         person.setRecommencedBy(rs.getString(8));
         person.setStatus(rs.getString(9));
         return person;
     }
-
 }

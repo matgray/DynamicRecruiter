@@ -1,9 +1,19 @@
 package com.phideltcmu.recruiter.shared.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Person implements Serializable {
+    private String firstName = null;
+    private String lastName = null;
+    private String andrewID = null;
+    private String phoneNumber = null;
+    private String major = null;
+    private String classYear = null;
+    private String recommencedBy = null;
+    private String status = null;
+    private String notes = null;
+    private String originalReferrer = null;
+
     public Person() {
     }
 
@@ -11,6 +21,10 @@ public class Person implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.andrewID = andrewID;
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
     }
 
     public String getFirstName() {
@@ -53,11 +67,11 @@ public class Person implements Serializable {
         this.major = major;
     }
 
-    public Date getClassYear() {
+    public String getClassYear() {
         return classYear;
     }
 
-    public void setClassYear(Date classYear) {
+    public void setClassYear(String classYear) {
         this.classYear = classYear;
     }
 
@@ -77,13 +91,20 @@ public class Person implements Serializable {
         this.status = status;
     }
 
-    private String firstName;
-    private String lastName;
-    private String andrewID;
-    private String phoneNumber;
-    private String major;
-    private Date classYear;
-    private String recommencedBy;
-    private String status;
 
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getOriginalReferrer() {
+        return originalReferrer;
+    }
+
+    public void setOriginalReferrer(String originalReferrer) {
+        this.originalReferrer = originalReferrer;
+    }
 }

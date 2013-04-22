@@ -1,6 +1,7 @@
 package com.phideltcmu.recruiter.server.dao;
 
 
+import com.phideltcmu.recruiter.shared.model.AuthUser;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import javax.sql.DataSource;
@@ -17,8 +18,7 @@ public interface IDao {
 
     List<Person> selectAll();
 
-    void deleteAll();
+    void delete(String andrewId, String token);
 
-    void delete(String firstName, String lastName);
-
+    boolean add(Person p, AuthUser token);
 }

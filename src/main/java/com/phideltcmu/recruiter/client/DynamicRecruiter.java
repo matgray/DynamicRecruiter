@@ -8,6 +8,7 @@ import com.phideltcmu.recruiter.client.event.FacebookUserFetchedEvent;
 import com.phideltcmu.recruiter.client.event.FacebookUserFetchedEventHandler;
 import com.phideltcmu.recruiter.client.ui.LoginPanel;
 import com.phideltcmu.recruiter.client.ui.TabMenu;
+import com.phideltcmu.recruiter.shared.model.AuthUser;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -25,13 +26,14 @@ public class DynamicRecruiter implements EntryPoint, FacebookUserFetchedEventHan
      * Create a remote service proxy to talk to the server-side PersonTable service.
      */
     public static final RecruitTableServiceAsync RECRUIT_SERVICE = GWT.create(RecruitTableService.class);
-
     public static final SimpleEventBus GLOBAL_EVENT_BUS = new SimpleEventBus();
 
     private LoginPanel loginPanel = new LoginPanel();
     private Label topLeftText = new Label("Phi Delta Theta of Carnegie Mellon");
     private Label topLeftText2 = new Label("Dynamic Recruitment Manager");
     private StateManager stateManager;
+
+    public static AuthUser authUser = null;
 
     private void registerWithGlobalBus() {
         DynamicRecruiter.GLOBAL_EVENT_BUS.addHandler(FacebookUserFetchedEvent.TYPE, this);
@@ -67,9 +69,10 @@ public class DynamicRecruiter implements EntryPoint, FacebookUserFetchedEventHan
 
     @Override
     public void onLoginSuccess(FacebookUserFetchedEvent event) {
+        authUser = event.getFacebookPerson();
         RootPanel.get("top-left").remove(topLeftText);
         RootPanel.get("top-left").remove(topLeftText2);
-        TabMenu tabMenu = new TabMenu(event.getFacebookPerson());
+        TabMenu tabMenu = new TabMenu(authUser);
         tabMenu.setStyleName("fadeMe");
         stateManager.switchToWidget(tabMenu);
     }

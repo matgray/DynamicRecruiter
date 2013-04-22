@@ -43,6 +43,10 @@ public class AuthUser implements Serializable {
         this.image = image;
     }
 
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
     private String firstName;
     private String lastName;
     private String id;

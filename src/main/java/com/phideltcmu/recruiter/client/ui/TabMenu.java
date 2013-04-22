@@ -4,8 +4,6 @@ package com.phideltcmu.recruiter.client.ui;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.phideltcmu.recruiter.client.DynamicRecruiter;
-import com.phideltcmu.recruiter.client.handler.RecruitListLoadHandler;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
 
 public class TabMenu extends TabPanel {
@@ -23,15 +21,14 @@ public class TabMenu extends TabPanel {
         /**
          * Add a table tab
          */
-        RecruitTable table = new RecruitTable();
+        MasterListPanel masterListPanel = new MasterListPanel();
         HTML tableText = new HTML("Table");
-        this.add(table, tableText);
-        DynamicRecruiter.RECRUIT_SERVICE.getRecruitList(new RecruitListLoadHandler());
+        this.add(masterListPanel, tableText);
 
         /**
          * Add a tab for adding people
          */
-        PersonAddPanel personAddPanel = new PersonAddPanel();
+        SearchPanel personAddPanel = new SearchPanel();
         personAddPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         HTML addText = new HTML("Add");
         this.add(personAddPanel, addText);

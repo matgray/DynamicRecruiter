@@ -12,7 +12,7 @@ import java.util.List;
 public interface RecruitTableServiceAsync {
     void getRecruitList(AsyncCallback<List<Person>> async);
 
-    void addPerson(Person p, AsyncCallback<Boolean> async);
+    void addPerson(Person p, AuthUser user, AsyncCallback<Boolean> async);
 
     void search(String text, AsyncCallback<List<Person>> async);
 

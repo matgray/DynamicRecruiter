@@ -31,9 +31,13 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public boolean addPerson(Person p) {
-        recruitListDao.create(p.getFirstName(), p.getLastName(), p.getAndrewID());
-        return true;
+    public boolean addPerson(Person p, AuthUser user) {
+        try {
+            return recruitListDao.add(p, user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
