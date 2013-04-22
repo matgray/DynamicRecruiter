@@ -8,6 +8,7 @@ import com.phideltcmu.recruiter.client.ui.popup.CategoryNameChooser;
 
 public class AdminPanel extends VerticalPanel {
     Button addCategoryButton = new Button("Add new category");
+    Button addAdmin = new Button("Add another Admin");
 
     public AdminPanel() {
         super();
@@ -18,5 +19,16 @@ public class AdminPanel extends VerticalPanel {
                 new CategoryNameChooser().display();
             }
         });
+
+//        this.add(addAdmin);
+//
+//        addAdmin.addClickHandler(new ClickHandler() {
+//            @Override
+//            public void onClick(ClickEvent clickEvent) {
+//                new AdminPanel();
+//            }
+//        });
     }
+
+
 }

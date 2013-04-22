@@ -43,10 +43,11 @@ public class LoginPanel extends VerticalPanel {
         // Since the auth flow requires opening a popup window, it must be started
         // as a direct result of a user action, such as clicking a button or link.
         // Otherwise, a browser's popup blocker may block the popup.
-        Button button = new Button("Authenticate with Facebook");
+        final Button button = new Button("Authenticate with Facebook");
         button.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
+                button.setEnabled(false);
                 final AuthRequest req = new AuthRequest(FACEBOOK_AUTH_URL, FACEBOOK_CLIENT_ID)
                         .withScopes(FACEBOOK_GROUP_SCOPE)
                                 // Facebook expects a comma-delimited list of scopes

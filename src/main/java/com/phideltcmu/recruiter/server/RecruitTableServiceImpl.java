@@ -8,6 +8,7 @@ import com.phideltcmu.recruiter.server.directory.CmuLdap;
 import com.phideltcmu.recruiter.server.factory.FacebookUserFactory;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
 import com.phideltcmu.recruiter.shared.model.Category;
+import com.phideltcmu.recruiter.shared.model.InternalUser;
 import com.phideltcmu.recruiter.shared.model.Person;
 import com.restfb.types.User;
 import com.unboundid.ldap.sdk.LDAPException;
@@ -113,6 +114,22 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
                 number.substring(6, 10));
         recruitListDao.updateTelephone(andrewID, number);
         return number;
+    }
+
+    @Override
+    public List<InternalUser> getNonAdmins() {
+        return recruitListDao.getNonAdmins();
+    }
+
+    @Override
+    public List<InternalUser> getAdmins() {
+        return recruitListDao.getAdmins();
+    }
+
+    @Override
+    public void setUserAdminLevel(String internalID, boolean b, String token) {
+        ensureAdmin(token);
+        recruitListDao.setAdmin(internalID, b);
     }
 
     private void ensureAdmin(String token) {

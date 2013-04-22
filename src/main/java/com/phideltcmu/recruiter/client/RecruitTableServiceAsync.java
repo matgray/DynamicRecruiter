@@ -3,6 +3,7 @@ package com.phideltcmu.recruiter.client;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
 import com.phideltcmu.recruiter.shared.model.Category;
+import com.phideltcmu.recruiter.shared.model.InternalUser;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import java.util.List;
@@ -32,4 +33,10 @@ public interface RecruitTableServiceAsync {
     void internalIDsToNames(List<String> ids, AsyncCallback<List<String>> async);
 
     void setPhoneNumber(String andrewID, String number, String token, AsyncCallback<String> async);
+
+    void getAdmins(AsyncCallback<List<InternalUser>> async);
+
+    void getNonAdmins(AsyncCallback<List<InternalUser>> async);
+
+    void setUserAdminLevel(String internalID, boolean b, String token, AsyncCallback<Void> async);
 }

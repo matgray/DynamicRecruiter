@@ -3,6 +3,7 @@ package com.phideltcmu.recruiter.server.dao;
 
 import com.phideltcmu.recruiter.shared.model.AuthUser;
 import com.phideltcmu.recruiter.shared.model.Category;
+import com.phideltcmu.recruiter.shared.model.InternalUser;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import javax.sql.DataSource;
@@ -38,4 +39,10 @@ public interface IDao {
     void updateTelephone(String andrewID, String phoneNumber);
 
     boolean isAdmin(String fbid);
+
+    List<InternalUser> getNonAdmins();
+
+    List<InternalUser> getAdmins();
+
+    void setAdmin(String fbid, Boolean b);
 }

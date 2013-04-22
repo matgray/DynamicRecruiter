@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
 import com.phideltcmu.recruiter.shared.model.Category;
+import com.phideltcmu.recruiter.shared.model.InternalUser;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import java.util.List;
@@ -34,4 +35,10 @@ public interface RecruitTableService extends RemoteService {
     List<String> internalIDsToNames(List<String> ids);
 
     String setPhoneNumber(String andrewID, String number, String token);
+
+    List<InternalUser> getNonAdmins();
+
+    List<InternalUser> getAdmins();
+
+    void setUserAdminLevel(String internalID, boolean b, String token);
 }

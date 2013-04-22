@@ -201,4 +201,25 @@ public class RecruitListDao implements IDao {
         }
         return false;
     }
+
+    @Override
+    public List<InternalUser> getNonAdmins() {
+        checkSingleton();
+        return jdbcTemplate.query("SELECT * FROM recruitList.userList where isAdmin=0",
+                new InternalUserRowMapper());
+    }
+
+    @Override
+    public List<InternalUser> getAdmins() {
+        checkSingleton();
+        return jdbcTemplate.query("SELECT * FROM recruitList.userList where isAdmin=1",
+                new InternalUserRowMapper());
+    }
+
+    @Override
+    public void setAdmin(String fbid, Boolean b) {
+        checkSingleton();
+        jdbcTemplate.update("UPDATE recruitList.userList SET isAdmin=? WHERE facebookID=?",
+                new Object[]{b, fbid});
+    }
 }

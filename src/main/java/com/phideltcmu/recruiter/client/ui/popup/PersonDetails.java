@@ -21,12 +21,12 @@ public class PersonDetails extends HidablePopup {
 
         Button editNotes = new Button("Edit");
 
-        ft.setText(0, 0, "Notes");
+        ft.setText(0, 0, "Notes:");
         ft.setWidget(0, 1, notes == null ? new HTML("NONE") : new HTML(notes));
         ft.setWidget(0, 2, editNotes);
-        ft.setText(1, 0, "Referrals");
-        ft.setText(1, 1, referrals == null ? "NONE" : "Loading...");
-        ft.setText(2, 0, "Added By");
+        ft.setWidget(1, 0, new HTML("<b>Referrals: </b>"));
+        ft.setText(1, 1, referrals.length() == 0 ? "None" : "Loading...");
+        ft.setWidget(2, 0, new HTML("<b>Added By: </b>"));
         ft.setText(2, 1, addedBy == null ? "ERROR" : "Loading...");
 
         editNotes.addClickHandler(new ClickHandler() {
@@ -45,7 +45,7 @@ public class PersonDetails extends HidablePopup {
             list.add(s);
         }
 
-        if (referrals != null) {
+        if (referrals.length() > 0) {
             DynamicRecruiter.RECRUIT_SERVICE.internalIDsToNames(list, new AsyncCallback<List<String>>() {
                 @Override
                 public void onFailure(Throwable throwable) {
