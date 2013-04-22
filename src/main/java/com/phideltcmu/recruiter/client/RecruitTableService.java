@@ -26,4 +26,6 @@ public interface RecruitTableService extends RemoteService {
     List<Category> getCategories();
 
     void changeCategory(String andrewId, String newCategory, String token);
+
+    void removeUser(String andrewID, String token);
 }

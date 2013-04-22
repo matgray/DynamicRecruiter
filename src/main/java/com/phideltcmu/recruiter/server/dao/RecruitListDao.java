@@ -50,7 +50,10 @@ public class RecruitListDao implements IDao {
     }
 
     @Override
-    public void delete(String andrewId, String token) {
+    public void delete(String andrewId) {
+        checkSingleton();
+        jdbcTemplate.update("DELETE FROM recruitList.infolist WHERE andrewid=?",
+                new Object[]{andrewId});
     }
 
     @Override
@@ -100,7 +103,7 @@ public class RecruitListDao implements IDao {
             System.out.println("Status is already in DB");
             return false;
         } else {
-            jdbcTemplate.update("insert into recruitList.statuses values (?)",
+            jdbcTemplate.update("INSERT INTO recruitList.statuses VALUES (?)",
                     new Object[]{categoryName});
             return true;
         }

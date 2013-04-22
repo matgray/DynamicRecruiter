@@ -74,4 +74,10 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         //TODO: AUTHENTICATE ADMIN
         recruitListDao.changeCategory(andrewId, newCategory);
     }
+
+    @Override
+    public void removeUser(String andrewID, String token) {
+        //TODO: AUTHENTICATE ADMIN
+        recruitListDao.delete(andrewID);
+    }
 }

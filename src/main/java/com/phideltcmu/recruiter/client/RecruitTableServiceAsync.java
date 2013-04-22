@@ -24,4 +24,6 @@ public interface RecruitTableServiceAsync {
     void getCategories(AsyncCallback<List<Category>> async);
 
     void changeCategory(String andrewId, String newCategory, String token, AsyncCallback<Void> async);
+
+    void removeUser(String andrewID, String token, AsyncCallback<Void> async);
 }

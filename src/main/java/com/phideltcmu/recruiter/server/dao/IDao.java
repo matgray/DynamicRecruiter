@@ -19,7 +19,7 @@ public interface IDao {
 
     List<Person> selectAll();
 
-    void delete(String andrewId, String token);
+    void delete(String andrewID);
 
     boolean add(Person p, AuthUser token);
 

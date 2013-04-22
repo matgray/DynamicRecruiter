@@ -12,6 +12,7 @@ import com.phideltcmu.recruiter.client.event.CategoriesFetchedEvent;
 import com.phideltcmu.recruiter.client.event.CategoriesFetchedEventHandler;
 import com.phideltcmu.recruiter.client.event.RecruitTableFetchedEvent;
 import com.phideltcmu.recruiter.client.event.RecruitTableFetchedEventHandler;
+import com.phideltcmu.recruiter.client.handler.RemoveUserHandler;
 import com.phideltcmu.recruiter.shared.model.Category;
 import com.phideltcmu.recruiter.shared.model.Person;
 
@@ -55,6 +56,7 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
         deletePersonButton.setFieldUpdater(new FieldUpdater<Person, String>() {
             @Override
             public void update(int i, Person person, String s) {
+                DynamicRecruiter.RECRUIT_SERVICE.removeUser(person.getAndrewID(), DynamicRecruiter.authUser.getAuthToken(), new RemoveUserHandler());
             }
         });
 
