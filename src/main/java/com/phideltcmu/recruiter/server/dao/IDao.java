@@ -1,10 +1,7 @@
 package com.phideltcmu.recruiter.server.dao;
 
 
-import com.phideltcmu.recruiter.shared.model.AuthUser;
-import com.phideltcmu.recruiter.shared.model.Category;
-import com.phideltcmu.recruiter.shared.model.InternalUser;
-import com.phideltcmu.recruiter.shared.model.Person;
+import com.phideltcmu.recruiter.shared.model.*;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -45,4 +42,6 @@ public interface IDao {
     List<InternalUser> getAdmins();
 
     void setAdmin(String fbid, Boolean b);
+
+    List<InternalUserStat> getStats();
 }

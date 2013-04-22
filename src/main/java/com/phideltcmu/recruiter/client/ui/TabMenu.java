@@ -35,6 +35,13 @@ public class TabMenu extends TabPanel {
         this.add(personAddPanel, addText);
 
         /**
+         * Add a leaderboard
+         */
+        LeaderboardPanel leaderboardPanel = new LeaderboardPanel();
+        HTML leaderboardText = new HTML("Leaderboard");
+        this.add(leaderboardPanel, leaderboardText);
+
+        /**
          * Add an admin tab
          */
         if (DynamicRecruiter.authUser.isAdmin()) {

@@ -2,10 +2,7 @@ package com.phideltcmu.recruiter.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
-import com.phideltcmu.recruiter.shared.model.AuthUser;
-import com.phideltcmu.recruiter.shared.model.Category;
-import com.phideltcmu.recruiter.shared.model.InternalUser;
-import com.phideltcmu.recruiter.shared.model.Person;
+import com.phideltcmu.recruiter.shared.model.*;
 
 import java.util.List;
 
@@ -41,4 +38,6 @@ public interface RecruitTableService extends RemoteService {
     List<InternalUser> getAdmins();
 
     void setUserAdminLevel(String internalID, boolean b, String token);
+
+    List<InternalUserStat> getUserStats();
 }

@@ -1,10 +1,7 @@
 package com.phideltcmu.recruiter.server.dao;
 
 import com.phideltcmu.recruiter.server.dao.mapper.*;
-import com.phideltcmu.recruiter.shared.model.AuthUser;
-import com.phideltcmu.recruiter.shared.model.Category;
-import com.phideltcmu.recruiter.shared.model.InternalUser;
-import com.phideltcmu.recruiter.shared.model.Person;
+import com.phideltcmu.recruiter.shared.model.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -205,14 +202,14 @@ public class RecruitListDao implements IDao {
     @Override
     public List<InternalUser> getNonAdmins() {
         checkSingleton();
-        return jdbcTemplate.query("SELECT * FROM recruitList.userList where isAdmin=0",
+        return jdbcTemplate.query("SELECT * FROM recruitList.userList WHERE isAdmin=0",
                 new InternalUserRowMapper());
     }
 
     @Override
     public List<InternalUser> getAdmins() {
         checkSingleton();
-        return jdbcTemplate.query("SELECT * FROM recruitList.userList where isAdmin=1",
+        return jdbcTemplate.query("SELECT * FROM recruitList.userList WHERE isAdmin=1",
                 new InternalUserRowMapper());
     }
 
@@ -221,5 +218,12 @@ public class RecruitListDao implements IDao {
         checkSingleton();
         jdbcTemplate.update("UPDATE recruitList.userList SET isAdmin=? WHERE facebookID=?",
                 new Object[]{b, fbid});
+    }
+
+    @Override
+    public List<InternalUserStat> getStats() {
+        checkSingleton();
+        return jdbcTemplate.query("SELECT referredBy, COUNT(*) FROM recruitList.infolist GROUP BY referredBy",
+                new StatCountRowMapper());
     }
 }
