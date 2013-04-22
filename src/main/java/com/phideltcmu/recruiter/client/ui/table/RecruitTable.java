@@ -62,17 +62,6 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
 
         columnMap.put("", deletePersonButton);
 
-        DynamicRecruiter.RECRUIT_SERVICE.getCategories(new AsyncCallback<List<Category>>() {
-            @Override
-            public void onFailure(Throwable throwable) {
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onSuccess(List<Category> categories) {
-                DynamicRecruiter.GLOBAL_EVENT_BUS.fireEvent(new CategoriesFetchedEvent(categories));
-            }
-        });
     }
 
     @Override

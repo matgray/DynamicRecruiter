@@ -17,7 +17,7 @@ public interface IDao {
 
     List<Person> select(String firstname, String lastname);
 
-    List<Person> selectAll();
+    List<Person> selectAll(List<Category> desiredCategories);
 
     void delete(String andrewID);
 

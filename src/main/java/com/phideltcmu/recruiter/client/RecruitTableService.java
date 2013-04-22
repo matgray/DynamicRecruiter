@@ -13,7 +13,7 @@ import java.util.List;
  */
 @RemoteServiceRelativePath("recruitModify")
 public interface RecruitTableService extends RemoteService {
-    List<Person> getRecruitList();
+    List<Person> getRecruitList(List<Category> desiredCategories);
 
     boolean addPerson(Person p, AuthUser user);
 

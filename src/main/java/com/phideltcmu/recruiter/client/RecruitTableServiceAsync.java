@@ -11,7 +11,7 @@ import java.util.List;
  * The async counterpart of <code>RecruitTableService</code>.
  */
 public interface RecruitTableServiceAsync {
-    void getRecruitList(AsyncCallback<List<Person>> async);
+    void getRecruitList(List<Category> desiredCategorie, AsyncCallback<List<Person>> async);
 
     void addPerson(Person p, AuthUser user, AsyncCallback<Boolean> async);
 

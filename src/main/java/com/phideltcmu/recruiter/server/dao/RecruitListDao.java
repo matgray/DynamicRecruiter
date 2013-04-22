@@ -41,8 +41,16 @@ public class RecruitListDao implements IDao {
     }
 
     @Override
-    public List<Person> selectAll() {
+    public List<Person> selectAll(List<Category> desiredCategories) {
+        //TODO FIX CATS
         checkSingleton();
+
+        StringBuilder b = new StringBuilder();
+        for (Category c : desiredCategories) {
+            b.append("status='" + c.getValue() + "'");
+            b.append(" OR ");
+        }
+        String opts = b.substring(0, b.length() - 4);
 
         //noinspection unchecked
         return jdbcTemplate.query("SELECT * FROM recruitList.infolist",

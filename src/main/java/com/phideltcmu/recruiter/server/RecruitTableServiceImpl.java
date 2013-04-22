@@ -27,8 +27,8 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     private RecruitListDao recruitListDao = (RecruitListDao) context.getBean("recruitListDao");
 
     @Override
-    public List<Person> getRecruitList() {
-        return recruitListDao.selectAll();
+    public List<Person> getRecruitList(List<Category> desiredCategories) {
+        return recruitListDao.selectAll(desiredCategories);
     }
 
     @Override
