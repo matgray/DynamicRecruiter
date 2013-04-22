@@ -112,3 +112,9 @@ div.fadeMe {
     font-size: small;
     font-family: 'Oldenburg', serif;
 }
+
+@external .gwt-RichTextArea;
+.gwt-RichTextArea {
+    background-color: lightGrey;
+    word-wrap: break-word;
+}

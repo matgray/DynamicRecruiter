@@ -26,4 +26,10 @@ public interface RecruitTableServiceAsync {
     void changeCategory(String andrewId, String newCategory, String token, AsyncCallback<Void> async);
 
     void removeUser(String andrewID, String token, AsyncCallback<Void> async);
+
+    void saveNotes(String andrewID, String notes, String token, AsyncCallback<Void> async);
+
+    void internalIDsToNames(List<String> ids, AsyncCallback<List<String>> async);
+
+    void setPhoneNumber(String andrewID, String number, String token, AsyncCallback<String> async);
 }

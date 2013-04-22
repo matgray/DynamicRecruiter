@@ -28,4 +28,10 @@ public interface RecruitTableService extends RemoteService {
     void changeCategory(String andrewId, String newCategory, String token);
 
     void removeUser(String andrewID, String token);
+
+    void saveNotes(String andrewID, String notes, String token);
+
+    List<String> internalIDsToNames(List<String> ids);
+
+    String setPhoneNumber(String andrewID, String number, String token);
 }

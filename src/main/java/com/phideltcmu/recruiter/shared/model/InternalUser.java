@@ -1,6 +1,8 @@
 package com.phideltcmu.recruiter.shared.model;
 
-public class InternalUser {
+import java.io.Serializable;
+
+public class InternalUser implements Serializable {
     private String name;
     private int databaseID;
     private boolean isAdmin;

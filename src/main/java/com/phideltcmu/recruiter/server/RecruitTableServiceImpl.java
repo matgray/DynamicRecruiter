@@ -14,6 +14,7 @@ import com.unboundid.ldap.sdk.LDAPException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,13 +29,21 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
 
     @Override
     public List<Person> getRecruitList(List<Category> desiredCategories) {
-        return recruitListDao.selectAll(desiredCategories);
+        try {
+            return recruitListDao.selectAll(desiredCategories);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public boolean addPerson(Person p, AuthUser user) {
         try {
-            return recruitListDao.add(p, user);
+            if (!recruitListDao.add(p, user)) {
+                recruitListDao.addToReferrals(p.getAndrewID(), user.getId());
+            }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,5 +88,33 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     public void removeUser(String andrewID, String token) {
         //TODO: AUTHENTICATE ADMIN
         recruitListDao.delete(andrewID);
+    }
+
+    @Override
+    public void saveNotes(String andrewID, String notes, String token) {
+        //TODO: MAYBE AUTHENTICATE ADMIN
+        recruitListDao.saveNotes(andrewID, notes);
+    }
+
+    @Override
+    public List<String> internalIDsToNames(List<String> ids) {
+        List<String> names = new ArrayList<String>(ids.size());
+        for (String id : ids) {
+            names.add(recruitListDao.getNameFromInternalID(id));
+        }
+        return names;
+    }
+
+    @Override
+    public String setPhoneNumber(String andrewID, String number, String token) {
+        //TODO: MAYBE AUTHENTICATE ADMIN?
+        number = number.replaceAll("\\D+", "");
+        if (number.length() != 10) {
+            throw new IllegalStateException("Illegal Number");
+        }
+        number = String.format("(%s) %s-%s", number.substring(0, 3), number.substring(3, 6),
+                number.substring(6, 10));
+        recruitListDao.updateTelephone(andrewID, number);
+        return number;
     }
 }

@@ -28,4 +28,12 @@ public interface IDao {
     List<Category> getCategories();
 
     void changeCategory(String andrewID, String newStatus);
+
+    void saveNotes(String andrewID, String Notes);
+
+    void addToReferrals(String andrewID, String id);
+
+    String getNameFromInternalID(String internalID);
+
+    void updateTelephone(String andrewID, String phoneNumber);
 }

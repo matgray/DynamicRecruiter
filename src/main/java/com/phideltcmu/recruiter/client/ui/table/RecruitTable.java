@@ -1,10 +1,10 @@
 package com.phideltcmu.recruiter.client.ui.table;
 
 import com.google.gwt.cell.client.ButtonCell;
+import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
@@ -13,6 +13,7 @@ import com.phideltcmu.recruiter.client.event.CategoriesFetchedEventHandler;
 import com.phideltcmu.recruiter.client.event.RecruitTableFetchedEvent;
 import com.phideltcmu.recruiter.client.event.RecruitTableFetchedEventHandler;
 import com.phideltcmu.recruiter.client.handler.RemoveUserHandler;
+import com.phideltcmu.recruiter.client.ui.popup.PersonDetails;
 import com.phideltcmu.recruiter.shared.model.Category;
 import com.phideltcmu.recruiter.shared.model.Person;
 
@@ -24,12 +25,25 @@ import java.util.Map;
 public class RecruitTable extends PersonTable implements RecruitTableFetchedEventHandler, CategoriesFetchedEventHandler {
     private Map<String, Column<Person, String>> columnMap = new HashMap<String, Column<Person, String>>();
 
+    /**
+     * Get a cell value from a record.
+     *
+     * @param <C> the cell type
+     */
+    private static interface GetValue<C> {
+        C getValue(Person contact);
+    }
+
     public RecruitTable() {
         super();
         DynamicRecruiter.GLOBAL_EVENT_BUS.addHandler(RecruitTableFetchedEvent.TYPE, this);
         DynamicRecruiter.GLOBAL_EVENT_BUS.addHandler(CategoriesFetchedEvent.TYPE, this);
 
-        TextColumn<Person> phoneNumberColumn = new TextColumn<Person>() {
+
+        // EditTextCell.
+        EditTextCell editTextCell = new EditTextCell();
+
+        Column<Person, String> editTextColumn = new Column<Person, String>(editTextCell) {
             @Override
             public String getValue(Person person) {
                 String phoneNumber = person.getPhoneNumber();
@@ -37,7 +51,30 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
             }
         };
 
-        columnMap.put("Phone Number", phoneNumberColumn);
+        editTextColumn.setFieldUpdater(new FieldUpdater<Person, String>() {
+            @Override
+            public void update(int i, final Person person, String s) {
+                String number = s.replaceAll("\\D+", "");
+                if (number.length() == 10) {
+                    DynamicRecruiter.RECRUIT_SERVICE.setPhoneNumber(person.getAndrewID(), number, DynamicRecruiter.authUser.getAuthToken(), new AsyncCallback<String>() {
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            throwable.printStackTrace();
+                        }
+
+                        @Override
+                        public void onSuccess(String formattedNumber) {
+                            person.setPhoneNumber(formattedNumber);
+                            Window.alert("Number Changed!");
+                        }
+                    });
+                } else {
+                    Window.alert("That's an invalid number");
+                }
+            }
+        });
+
+        columnMap.put("Phone Number", editTextColumn);
 
         ButtonCell buttonCell = new ButtonCell() {
             @Override
@@ -60,8 +97,23 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
             }
         });
 
-        columnMap.put("", deletePersonButton);
+        columnMap.put("Options", deletePersonButton);
 
+        Column<Person, String> detailsButton = new Column<Person, String>(buttonCell) {
+            @Override
+            public String getValue(Person person) {
+                return "View";
+            }
+        };
+
+        detailsButton.setFieldUpdater(new FieldUpdater<Person, String>() {
+            @Override
+            public void update(int i, Person person, String s) {
+                new PersonDetails(person).display();
+            }
+        });
+
+        columnMap.put("Details", detailsButton);
     }
 
     @Override

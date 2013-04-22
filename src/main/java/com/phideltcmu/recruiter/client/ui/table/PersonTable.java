@@ -16,6 +16,7 @@ public class PersonTable extends CellTable<Person> {
     private final TextColumn<Person> lastNameColumn;
     private final TextColumn<Person> andrewIdColumn;
     private final TextColumn<Person> classYearColumn;
+    private final TextColumn<Person> majorColumn;
     private boolean initialized = false;
 
 
@@ -54,6 +55,14 @@ public class PersonTable extends CellTable<Person> {
                 return classYear == null ? "N/A" : classYear;
             }
         };
+
+        this.majorColumn = new TextColumn<Person>() {
+            @Override
+            public String getValue(Person person) {
+                String major = person.getMajor();
+                return major == null ? "N/A" : major;
+            }
+        };
         dataProvider.addDataDisplay(this);
     }
 
@@ -74,6 +83,7 @@ public class PersonTable extends CellTable<Person> {
         this.addColumn(firstNameColumn, "First Name");
         this.addColumn(andrewIdColumn, "Andrew ID");
         this.addColumn(classYearColumn, "Class Year");
+        this.addColumn(majorColumn, "Department");
     }
 
     public void initColumns() {

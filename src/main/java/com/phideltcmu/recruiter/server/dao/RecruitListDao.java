@@ -1,15 +1,16 @@
 package com.phideltcmu.recruiter.server.dao;
 
-import com.phideltcmu.recruiter.server.dao.mapper.CategoryRowMapper;
-import com.phideltcmu.recruiter.server.dao.mapper.InternalUserRowMapper;
-import com.phideltcmu.recruiter.server.dao.mapper.PersonRowMapper;
+import com.phideltcmu.recruiter.server.dao.mapper.*;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
 import com.phideltcmu.recruiter.shared.model.Category;
 import com.phideltcmu.recruiter.shared.model.InternalUser;
 import com.phideltcmu.recruiter.shared.model.Person;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecruitListDao implements IDao {
@@ -45,16 +46,18 @@ public class RecruitListDao implements IDao {
         //TODO FIX CATS
         checkSingleton();
 
-        StringBuilder b = new StringBuilder();
+        List<String> list = new ArrayList<String>();
         for (Category c : desiredCategories) {
-            b.append("status='" + c.getValue() + "'");
-            b.append(" OR ");
+            list.add(c.getValue());
         }
-        String opts = b.substring(0, b.length() - 4);
 
-        //noinspection unchecked
-        return jdbcTemplate.query("SELECT * FROM recruitList.infolist",
-                new PersonRowMapper());
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        MapSqlParameterSource parameters = new MapSqlParameterSource();
+        parameters.addValue("categories", list);
+        return namedParameterJdbcTemplate.query("SELECT * FROM recruitList.infolist WHERE status IN (:categories)",
+                parameters,
+                new PersonRowMapper()
+        );
     }
 
     @Override
@@ -78,13 +81,13 @@ public class RecruitListDao implements IDao {
 
         int id;
 
-        List<InternalUser> internalMatches = getInternalUser(user);
+        List<InternalUser> internalMatches = getInternalUser(user.getId());
 
         if (internalMatches.size() == 0) {
             jdbcTemplate.update("INSERT INTO recruitList.userList VALUES (default,?,default,?)",
                     new Object[]{user.getFullName(), user.getId()});
 
-            internalMatches = getInternalUser(user);
+            internalMatches = getInternalUser(user.getId());
         }
 
         if (internalMatches.size() > 1 || internalMatches.size() == 0) {
@@ -127,13 +130,64 @@ public class RecruitListDao implements IDao {
     @Override
     public void changeCategory(String andrewID, String newStatus) {
         checkSingleton();
-        jdbcTemplate.update("UPDATE recruitList.infolist SET status=? WHERE andrewID=?",
+        jdbcTemplate.update("UPDATE recruitList.infolist SET status=? WHERE andrewid=?",
                 new Object[]{newStatus, andrewID});
     }
 
-    private List<InternalUser> getInternalUser(AuthUser user) {
+    @Override
+    public void saveNotes(String andrewID, String notes) {
+        checkSingleton();
+        jdbcTemplate.update("UPDATE recruitList.infolist SET notes=? WHERE andrewid=?",
+                new Object[]{notes, andrewID});
+    }
+
+    @Override
+    public void addToReferrals(String andrewid, String fbid) {
+        checkSingleton();
+
+        List<String> referrers = jdbcTemplate.query("SELECT additionalReferrals FROM recruitList.infolist WHERE andrewid=?",
+                new Object[]{andrewid},
+                new ReferralRowMapper());
+
+        if (referrers.size() != 1) {
+            throw new IllegalStateException("Multiple Matches");
+        }
+
+        int len = referrers.get(0).length();
+
+        StringBuilder appendString = new StringBuilder();
+        if (len != 0) {
+            appendString = appendString.append(",");
+        }
+        appendString.append(getInternalUser(fbid).get(0).getDatabaseID());
+
+        jdbcTemplate.update("UPDATE recruitList.infolist SET additionalReferrals= CONCAT(additionalReferrals,?) WHERE andrewid=?",
+                new Object[]{appendString, andrewid});
+    }
+
+    private List<InternalUser> getInternalUser(String fbID) {
         return jdbcTemplate.query("SELECT * FROM recruitList.userList WHERE facebookID=?",
-                new Object[]{user.getId()},
+                new Object[]{fbID},
                 new InternalUserRowMapper());
+    }
+
+    @Override
+    public String getNameFromInternalID(String internalID) {
+        checkSingleton();
+        List<String> singletonList = jdbcTemplate.query("SELECT name FROM recruitList.userList WHERE id=?",
+                new Object[]{internalID},
+                new InternalNameRowMapper());
+
+        if (singletonList.size() > 0) {
+            return singletonList.get(0);
+        }
+        return "ERROR";
+    }
+
+    @Override
+    public void updateTelephone(String andrewID, String phoneNumber) {
+        checkSingleton();
+        jdbcTemplate.update("UPDATE recruitList.infolist SET phonenumber=? WHERE andrewid=?",
+                new Object[]{phoneNumber, andrewID});
     }
 }
