@@ -72,6 +72,16 @@
             <artifactId>spring</artifactId>
             <version>2.5.6.SEC03</version>
         </dependency>
+        <dependency>
+            <groupId>com.restfb</groupId>
+            <artifactId>restfb</artifactId>
+            <version>1.6.12</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.flexjson</groupId>
+            <artifactId>flexjson</artifactId>
+            <version>2.0</version>
+        </dependency>
     </dependencies>
 
     <build>
