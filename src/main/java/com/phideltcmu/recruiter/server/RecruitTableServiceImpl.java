@@ -6,16 +6,14 @@ import com.phideltcmu.recruiter.server.auth.Facebook;
 import com.phideltcmu.recruiter.server.dao.RecruitListDao;
 import com.phideltcmu.recruiter.server.directory.CmuLdap;
 import com.phideltcmu.recruiter.server.factory.FacebookUserFactory;
-import com.phideltcmu.recruiter.shared.model.AuthUser;
-import com.phideltcmu.recruiter.shared.model.Category;
-import com.phideltcmu.recruiter.shared.model.InternalUser;
-import com.phideltcmu.recruiter.shared.model.Person;
+import com.phideltcmu.recruiter.shared.model.*;
 import com.restfb.types.User;
 import com.unboundid.ldap.sdk.LDAPException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,6 +60,7 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         User fbUser = Facebook.getUser(token);
         AuthUser user = FacebookUserFactory.createAuthUser(fbUser);
         user.setAdmin(recruitListDao.isAdmin(user.getId()));
+        user.setAuthToken(token);
         return user;
     }
 
@@ -132,10 +131,24 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         recruitListDao.setAdmin(internalID, b);
     }
 
+    @Override
+    public List<InternalUserStat> getUserStats() {
+        List<InternalUserStat> stats = recruitListDao.getStats();
+
+        for (InternalUserStat s : stats) {
+            s.setName(internalIDsToNames(Arrays.asList(Integer.toString(s.getInternalID()))).get(0));
+        }
+        return stats;
+    }
+
     private void ensureAdmin(String token) {
-        AuthUser u = facebookLogin(token);
-        if (!u.isAdmin()) {
-            throw new IllegalStateException("Admin Verification Failed");
+        try {
+            AuthUser u = facebookLogin(token);
+            if (!u.isAdmin()) {
+                throw new IllegalStateException("Admin Verification Failed");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
