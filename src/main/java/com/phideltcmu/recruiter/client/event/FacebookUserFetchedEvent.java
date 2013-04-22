@@ -33,6 +33,6 @@ public class FacebookUserFetchedEvent extends GwtEvent<FacebookUserFetchedEventH
 
     @Override
     protected void dispatch(FacebookUserFetchedEventHandler handler) {
-        handler.onUserInfoFetched(this);
+        handler.onLoginSuccess(this);
     }
 }

@@ -5,12 +5,21 @@ import com.google.api.gwt.oauth2.client.AuthRequest;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.phideltcmu.recruiter.client.handler.AuthenticationHandler;
 
 public class LoginPanel extends VerticalPanel {
+    private final Image shield = new Image("images/pdt-shield.png");
+    private final Label warning = new Label("This Application's use is restricted");
 
     public LoginPanel() {
+        super();
+        this.setHorizontalAlignment(ALIGN_CENTER);
+        warning.setStyleName("gwt-Label-red");
+        this.add(warning);
+        this.add(shield);
         addFacebookAuth();
         Auth.export();
     }
@@ -30,7 +39,7 @@ public class LoginPanel extends VerticalPanel {
     private static final String FACEBOOK_EMAIL_SCOPE = "email";
 
     // This scope allows the app to access the user's birthday.
-    private static final String FACEBOOK_BIRTHDAY_SCOPE = "user_birthday";
+    private static final String FACEBOOK_GROUP_SCOPE = "user_groups";
 
     // Adds a button to the page that asks for authentication from Facebook.
     // Note that Facebook does not allow localhost as a redirect URL, so while
@@ -44,12 +53,13 @@ public class LoginPanel extends VerticalPanel {
             @Override
             public void onClick(ClickEvent event) {
                 final AuthRequest req = new AuthRequest(FACEBOOK_AUTH_URL, FACEBOOK_CLIENT_ID)
-                        .withScopes(FACEBOOK_EMAIL_SCOPE, FACEBOOK_BIRTHDAY_SCOPE)
+                        .withScopes(FACEBOOK_EMAIL_SCOPE, FACEBOOK_GROUP_SCOPE)
                                 // Facebook expects a comma-delimited list of scopes
                         .withScopeDelimiter(",");
                 AUTH.login(req, new AuthenticationHandler());
             }
         });
+        button.setStyleName("css_btn_class");
         this.add(button);
     }
 }

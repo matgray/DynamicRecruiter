@@ -8,6 +8,7 @@ import com.phideltcmu.recruiter.server.directory.CmuLdap;
 import com.phideltcmu.recruiter.server.factory.FacebookUserFactory;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
 import com.phideltcmu.recruiter.shared.model.Person;
+import com.restfb.types.User;
 import com.unboundid.ldap.sdk.LDAPException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -23,21 +24,6 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     private ApplicationContext context = new ClassPathXmlApplicationContext("/spring/Spring-Module.xml");
 
     private RecruitListDao recruitListDao = (RecruitListDao) context.getBean("recruitListDao");
-
-    /**
-     * Escape an html string. Escaping data received from the client helps to
-     * prevent cross-site script vulnerabilities.
-     *
-     * @param html the html string to escape
-     * @return the escaped string
-     */
-    private String escapeHtml(String html) {
-        if (html == null) {
-            return null;
-        }
-        return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(
-                ">", "&gt;");
-    }
 
     @Override
     public List<Person> getRecruitList() {
@@ -62,6 +48,8 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
 
     @Override
     public AuthUser facebookLogin(String token) throws Exception {
-        return FacebookUserFactory.createAuthUser(Facebook.getUser(token));
+        Facebook.isValid(token);
+        User fbUser = Facebook.getUser(token);
+        return FacebookUserFactory.createAuthUser(fbUser);
     }
 }

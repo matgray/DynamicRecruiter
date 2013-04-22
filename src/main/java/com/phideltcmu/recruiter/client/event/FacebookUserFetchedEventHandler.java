@@ -11,5 +11,5 @@ import com.google.gwt.event.shared.EventHandler;
  * The handler for the FacebookUserFetchedEvent
  */
 public interface FacebookUserFetchedEventHandler extends EventHandler {
-    void onUserInfoFetched(FacebookUserFetchedEvent event);
+    void onLoginSuccess(FacebookUserFetchedEvent event);
 }
