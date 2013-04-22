@@ -2,8 +2,13 @@ package com.phideltcmu.recruiter.server;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.phideltcmu.recruiter.client.RecruitTableService;
+import com.phideltcmu.recruiter.server.auth.Facebook;
 import com.phideltcmu.recruiter.server.dao.RecruitListDao;
+import com.phideltcmu.recruiter.server.directory.CmuLdap;
+import com.phideltcmu.recruiter.server.factory.FacebookUserFactory;
+import com.phideltcmu.recruiter.shared.model.AuthUser;
 import com.phideltcmu.recruiter.shared.model.Person;
+import com.unboundid.ldap.sdk.LDAPException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -43,5 +48,20 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     public boolean addPerson(Person p) {
         recruitListDao.create(p.getFirstName(), p.getLastName(), p.getAndrewID());
         return true;
+    }
+
+    @Override
+    public List<Person> search(String text) {
+        try {
+            return CmuLdap.getAttributes(text);
+        } catch (LDAPException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public AuthUser facebookLogin(String token) throws Exception {
+        return FacebookUserFactory.createAuthUser(Facebook.getUser(token));
     }
 }

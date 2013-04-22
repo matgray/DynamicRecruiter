@@ -2,6 +2,7 @@ package com.phideltcmu.recruiter.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.phideltcmu.recruiter.shared.model.AuthUser;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface RecruitTableService extends RemoteService {
     List<Person> getRecruitList();
 
     boolean addPerson(Person p);
+
+    List<Person> search(String text);
+
+    public AuthUser facebookLogin(String token) throws Exception;
 }
