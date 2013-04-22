@@ -3,20 +3,21 @@ package com.phideltcmu.recruiter.client.ui;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.ui.*;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
 import com.phideltcmu.recruiter.client.event.SearchCompletedEvent;
 import com.phideltcmu.recruiter.client.event.SearchCompletedEventHandler;
 import com.phideltcmu.recruiter.client.handler.SearchDirectoryHandler;
+import com.phideltcmu.recruiter.client.ui.popup.SearchingPopup;
 import com.phideltcmu.recruiter.client.ui.table.SearchMatchTable;
-import com.phideltcmu.recruiter.shared.model.Person;
 
 public class SearchPanel extends VerticalPanel implements SearchCompletedEventHandler {
     Button searchButton = new Button("Search");
     TextBox searchField = new TextBox();
     private SimpleEventBus privateEventBus = new SimpleEventBus();
     private SearchMatchTable table = new SearchMatchTable();
+    private Label noResults = new Label("Your query returned no results");
+    private static SearchingPopup searchingPopup = new SearchingPopup();
 
     public SearchPanel() {
         privateEventBus.addHandler(SearchCompletedEvent.TYPE, this);
@@ -45,21 +46,34 @@ public class SearchPanel extends VerticalPanel implements SearchCompletedEventHa
         searchButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
+                searchingPopup.center();
                 DynamicRecruiter.RECRUIT_SERVICE.search(searchField.getText(), new SearchDirectoryHandler(privateEventBus));
+                noResults.setVisible(false);
             }
         });
-
-        CellTable<Person> searchResults = new CellTable<Person>();
 
         DecoratorPanel infoPanel = new DecoratorPanel();
         infoPanel.setWidget(layout);
         this.add(infoPanel);
         this.add(new InlineHTML("<br><br>"));
         this.add(table);
+
+        noResults.setStyleName("gwt-Label-red");
+        this.add(noResults);
+        this.table.setVisible(false);
+        this.noResults.setVisible(false);
     }
 
     @Override
     public void onSearchCompleted(SearchCompletedEvent event) {
-        table.setData(event.getPersonList());
+        if (event.getPersonList().size() == 0) {
+            this.noResults.setVisible(true);
+            table.setVisible(false);
+            searchingPopup.hide();
+        } else {
+            table.setVisible(true);
+            table.setData(event.getPersonList());
+            searchingPopup.hide();
+        }
     }
 }

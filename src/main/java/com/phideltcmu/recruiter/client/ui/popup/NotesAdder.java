@@ -14,6 +14,7 @@ import com.phideltcmu.recruiter.shared.model.Person;
 public class NotesAdder extends HidablePopup {
     private Button saveButton = new Button("Save");
     private Label title = new Label();
+    final NotesAdder notesAdder = this;
 
     public NotesAdder(final Person p) {
         super();
@@ -41,6 +42,7 @@ public class NotesAdder extends HidablePopup {
 
                     @Override
                     public void onSuccess(Void aVoid) {
+                        notesAdder.hide();
                         Window.alert("Notes Saved!");
                     }
                 });

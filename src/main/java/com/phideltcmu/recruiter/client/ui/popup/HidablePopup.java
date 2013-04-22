@@ -13,6 +13,7 @@ public class HidablePopup extends PopupPanel {
         vp.add(w);
         vp.add(closeButton);
         vp.setWidth("100%");
+        closeButton.setWidth("100%");
         vp.setHorizontalAlignment(HorizontalPanel.ALIGN_CENTER);
         closeButton.addClickHandler(new ClickHandler() {
             @Override

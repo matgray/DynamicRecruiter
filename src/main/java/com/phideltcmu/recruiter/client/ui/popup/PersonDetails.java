@@ -19,15 +19,19 @@ public class PersonDetails extends HidablePopup {
         String referrals = person.getRecommencedBy();
         String addedBy = person.getOriginalReferrer();
 
-        Button editNotes = new Button("Edit");
+        Button editNotes = new Button("Edit Notes");
+        editNotes.setWidth("100%");
 
-        ft.setText(0, 0, "Notes:");
-        ft.setWidget(0, 1, notes == null ? new HTML("NONE") : new HTML(notes));
-        ft.setWidget(0, 2, editNotes);
-        ft.setWidget(1, 0, new HTML("<b>Referrals: </b>"));
-        ft.setText(1, 1, referrals.length() == 0 ? "None" : "Loading...");
-        ft.setWidget(2, 0, new HTML("<b>Added By: </b>"));
-        ft.setText(2, 1, addedBy == null ? "ERROR" : "Loading...");
+        ft.setWidget(0, 0, new HTML("<b>Details of " + person.getFullName() + "</b><br><hr>"));
+
+        ft.setWidget(1, 0, new HTML("<b>Notes:</b>"));
+        ft.setWidget(1, 1, notes == null ? new HTML("NONE") : new HTML(notes));
+        ft.setWidget(2, 1, editNotes);
+
+        ft.setWidget(3, 0, new HTML("<b>Referrals: </b>"));
+        ft.setText(4, 1, referrals.length() == 0 ? "None" : "Loading...");
+        ft.setWidget(5, 0, new HTML("<b>Added By: </b>"));
+        ft.setText(6, 1, addedBy == null ? "ERROR" : "Loading...");
 
         editNotes.addClickHandler(new ClickHandler() {
             @Override
@@ -59,7 +63,7 @@ public class PersonDetails extends HidablePopup {
                     for (String s : strings) {
                         builder.append(s + "<br>");
                     }
-                    ft.setWidget(1, 1, new HTML(builder.toString()));
+                    ft.setWidget(4, 1, new HTML(builder.toString()));
                 }
             });
         }
@@ -74,7 +78,7 @@ public class PersonDetails extends HidablePopup {
 
                 @Override
                 public void onSuccess(List<String> strings) {
-                    ft.setText(2, 1, strings.get(0));
+                    ft.setText(6, 1, strings.get(0));
                 }
             });
         }

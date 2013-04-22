@@ -12,7 +12,7 @@ public class WelcomePanel extends VerticalPanel {
         this.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 
         Label letters = new Label("ΦΔΘ");
-        Label welcome = new Label("Welcome, " + user.getFirstName());
+        Label welcome = new Label("You are logged in as: " + user.getFullName());
         letters.setStyleName("oldenburg500");
         welcome.setStyleName("oldenburg150");
         this.add(letters);
