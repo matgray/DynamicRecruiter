@@ -33,11 +33,6 @@ public class LoginPanel extends VerticalPanel {
     // (http://www.facebook.com/developers).
     private static final String FACEBOOK_CLIENT_ID = "438576859566362";
 
-    // All available scopes are listed here:
-    // http://developers.facebook.com/docs/authentication/permissions/
-    // This scope allows the app to access the user's email address.
-    private static final String FACEBOOK_EMAIL_SCOPE = "email";
-
     // This scope allows the app to access the user's birthday.
     private static final String FACEBOOK_GROUP_SCOPE = "user_groups";
 
@@ -53,7 +48,7 @@ public class LoginPanel extends VerticalPanel {
             @Override
             public void onClick(ClickEvent event) {
                 final AuthRequest req = new AuthRequest(FACEBOOK_AUTH_URL, FACEBOOK_CLIENT_ID)
-                        .withScopes(FACEBOOK_EMAIL_SCOPE, FACEBOOK_GROUP_SCOPE)
+                        .withScopes(FACEBOOK_GROUP_SCOPE)
                                 // Facebook expects a comma-delimited list of scopes
                         .withScopeDelimiter(",");
                 AUTH.login(req, new AuthenticationHandler());
