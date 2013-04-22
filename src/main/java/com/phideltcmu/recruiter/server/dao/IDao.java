@@ -2,6 +2,7 @@ package com.phideltcmu.recruiter.server.dao;
 
 
 import com.phideltcmu.recruiter.shared.model.AuthUser;
+import com.phideltcmu.recruiter.shared.model.Category;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import javax.sql.DataSource;
@@ -21,4 +22,10 @@ public interface IDao {
     void delete(String andrewId, String token);
 
     boolean add(Person p, AuthUser token);
+
+    boolean addCategory(String categoryName);
+
+    List<Category> getCategories();
+
+    void changeCategory(String andrewID, String newStatus);
 }

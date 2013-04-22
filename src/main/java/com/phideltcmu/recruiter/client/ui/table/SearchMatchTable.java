@@ -22,7 +22,7 @@ public class SearchMatchTable extends PersonTable {
         Column<Person, String> addButtonColumn = new Column<Person, String>(buttonCell) {
             @Override
             public String getValue(Person person) {
-                return "Add to recruitment list";
+                return "Add to list";
             }
         };
 

@@ -33,6 +33,13 @@ public class TabMenu extends TabPanel {
         HTML addText = new HTML("Add");
         this.add(personAddPanel, addText);
 
+        /**
+         * Add an admin tab
+         */
+        AdminPanel adminPanel = new AdminPanel();
+        HTML adminText = new HTML("Admin");
+        this.add(adminPanel, adminText);
+
         this.selectTab(0);
     }
 }

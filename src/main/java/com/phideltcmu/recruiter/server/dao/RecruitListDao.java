@@ -1,8 +1,10 @@
 package com.phideltcmu.recruiter.server.dao;
 
+import com.phideltcmu.recruiter.server.dao.mapper.CategoryRowMapper;
 import com.phideltcmu.recruiter.server.dao.mapper.InternalUserRowMapper;
 import com.phideltcmu.recruiter.server.dao.mapper.PersonRowMapper;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
+import com.phideltcmu.recruiter.shared.model.Category;
 import com.phideltcmu.recruiter.shared.model.InternalUser;
 import com.phideltcmu.recruiter.shared.model.Person;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -84,6 +86,38 @@ public class RecruitListDao implements IDao {
                 new Object[]{p.getLastName(), p.getFirstName(), p.getAndrewID(), p.getMajor(), p.getClassYear(), id});
 
         return true;
+    }
+
+    @Override
+    public boolean addCategory(String categoryName) {
+        checkSingleton();
+
+        List<Person> matches = jdbcTemplate.query("SELECT * FROM recruitList.statuses WHERE status=?",
+                new Object[]{categoryName},
+                new PersonRowMapper());
+
+        if (matches.size() != 0) {
+            System.out.println("Status is already in DB");
+            return false;
+        } else {
+            jdbcTemplate.update("insert into recruitList.statuses values (?)",
+                    new Object[]{categoryName});
+            return true;
+        }
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        checkSingleton();
+        return jdbcTemplate.query("SELECT * FROM recruitList.statuses",
+                new CategoryRowMapper());
+    }
+
+    @Override
+    public void changeCategory(String andrewID, String newStatus) {
+        checkSingleton();
+        jdbcTemplate.update("UPDATE recruitList.infolist SET status=? WHERE andrewID=?",
+                new Object[]{newStatus, andrewID});
     }
 
     private List<InternalUser> getInternalUser(AuthUser user) {

@@ -7,6 +7,7 @@ import com.phideltcmu.recruiter.server.dao.RecruitListDao;
 import com.phideltcmu.recruiter.server.directory.CmuLdap;
 import com.phideltcmu.recruiter.server.factory.FacebookUserFactory;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
+import com.phideltcmu.recruiter.shared.model.Category;
 import com.phideltcmu.recruiter.shared.model.Person;
 import com.restfb.types.User;
 import com.unboundid.ldap.sdk.LDAPException;
@@ -55,5 +56,22 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         Facebook.isValid(token);
         User fbUser = Facebook.getUser(token);
         return FacebookUserFactory.createAuthUser(fbUser);
+    }
+
+    @Override
+    public boolean addCategory(String name) {
+        //TODO: AUTHENTICATE ADMIN
+        return recruitListDao.addCategory(name);
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        return recruitListDao.getCategories();
+    }
+
+    @Override
+    public void changeCategory(String andrewId, String newCategory, String token) {
+        //TODO: AUTHENTICATE ADMIN
+        recruitListDao.changeCategory(andrewId, newCategory);
     }
 }

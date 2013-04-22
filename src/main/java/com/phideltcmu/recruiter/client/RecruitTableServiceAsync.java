@@ -2,6 +2,7 @@ package com.phideltcmu.recruiter.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
+import com.phideltcmu.recruiter.shared.model.Category;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import java.util.List;
@@ -17,4 +18,10 @@ public interface RecruitTableServiceAsync {
     void search(String text, AsyncCallback<List<Person>> async);
 
     void facebookLogin(String token, AsyncCallback<AuthUser> async);
+
+    void addCategory(String name, AsyncCallback<Boolean> async);
+
+    void getCategories(AsyncCallback<List<Category>> async);
+
+    void changeCategory(String andrewId, String newCategory, String token, AsyncCallback<Void> async);
 }
