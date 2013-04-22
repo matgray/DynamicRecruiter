@@ -19,7 +19,7 @@ public interface RecruitTableServiceAsync {
 
     void facebookLogin(String token, AsyncCallback<AuthUser> async);
 
-    void addCategory(String name, AsyncCallback<Boolean> async);
+    void addCategory(String name, String token, AsyncCallback<Boolean> async);
 
     void getCategories(AsyncCallback<List<Category>> async);
 

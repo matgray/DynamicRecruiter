@@ -5,6 +5,7 @@ import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
@@ -83,21 +84,23 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
             }
         };
 
-        Column<Person, String> deletePersonButton = new Column<Person, String>(buttonCell) {
-            @Override
-            public String getValue(Person person) {
-                return "Delete";
-            }
-        };
+        if (DynamicRecruiter.authUser.isAdmin()) {
+            Column<Person, String> deletePersonButton = new Column<Person, String>(buttonCell) {
+                @Override
+                public String getValue(Person person) {
+                    return "Delete";
+                }
+            };
 
-        deletePersonButton.setFieldUpdater(new FieldUpdater<Person, String>() {
-            @Override
-            public void update(int i, Person person, String s) {
-                DynamicRecruiter.RECRUIT_SERVICE.removeUser(person.getAndrewID(), DynamicRecruiter.authUser.getAuthToken(), new RemoveUserHandler());
-            }
-        });
+            deletePersonButton.setFieldUpdater(new FieldUpdater<Person, String>() {
+                @Override
+                public void update(int i, Person person, String s) {
+                    DynamicRecruiter.RECRUIT_SERVICE.removeUser(person.getAndrewID(), DynamicRecruiter.authUser.getAuthToken(), new RemoveUserHandler());
+                }
+            });
 
-        columnMap.put("Options", deletePersonButton);
+            columnMap.put("Options", deletePersonButton);
+        }
 
         Column<Person, String> detailsButton = new Column<Person, String>(buttonCell) {
             @Override
@@ -128,35 +131,45 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
         for (Category category : categories) {
             categoryNames.add(category.getValue());
         }
-        SelectionCell categoryCell = new SelectionCell(categoryNames);
-        Column<Person, String> categoryColumn = new Column<Person, String>(categoryCell) {
-            @Override
-            public String getValue(Person object) {
-                return categoryNames.get(categoryNames.indexOf(object.getStatus()));
-            }
-        };
+        if (DynamicRecruiter.authUser.isAdmin()) {
+            SelectionCell categoryCell = new SelectionCell(categoryNames);
+            Column<Person, String> categoryColumn = new Column<Person, String>(categoryCell) {
+                @Override
+                public String getValue(Person object) {
+                    return categoryNames.get(categoryNames.indexOf(object.getStatus()));
+                }
+            };
 
-        categoryColumn.setFieldUpdater(new FieldUpdater<Person, String>() {
-            @Override
-            public void update(int index, Person object, String value) {
-                object.setStatus(value);
-                DynamicRecruiter.RECRUIT_SERVICE.changeCategory(object.getAndrewID(),
-                        value,
-                        DynamicRecruiter.authUser.getAuthToken(),
-                        new AsyncCallback<Void>() {
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                throwable.printStackTrace();
-                            }
+            categoryColumn.setFieldUpdater(new FieldUpdater<Person, String>() {
+                @Override
+                public void update(int index, Person object, String value) {
+                    object.setStatus(value);
+                    DynamicRecruiter.RECRUIT_SERVICE.changeCategory(object.getAndrewID(),
+                            value,
+                            DynamicRecruiter.authUser.getAuthToken(),
+                            new AsyncCallback<Void>() {
+                                @Override
+                                public void onFailure(Throwable throwable) {
+                                    throwable.printStackTrace();
+                                }
 
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Window.alert("Status Updated!");
-                            }
-                        });
-            }
-        });
-        columnMap.put("Status", categoryColumn);
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Window.alert("Status Updated!");
+                                }
+                            });
+                }
+            });
+            columnMap.put("Status", categoryColumn);
+        } else {
+            TextColumn<Person> statusColumn = new TextColumn<Person>() {
+                @Override
+                public String getValue(Person person) {
+                    return person.getStatus();
+                }
+            };
+            columnMap.put("Status", statusColumn);
+        }
         this.initColumns(columnMap);
     }
 }

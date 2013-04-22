@@ -190,4 +190,15 @@ public class RecruitListDao implements IDao {
         jdbcTemplate.update("UPDATE recruitList.infolist SET phonenumber=? WHERE andrewid=?",
                 new Object[]{phoneNumber, andrewID});
     }
+
+    @Override
+    public boolean isAdmin(String fbid) {
+        checkSingleton();
+        List<Boolean> booleanList = jdbcTemplate.query("SELECT isAdmin FROM recruitList.userList WHERE facebookID = ?",
+                new Object[]{fbid}, new IsAdminRowMapper());
+        if (booleanList.size() > 0) {
+            return booleanList.get(0);
+        }
+        return false;
+    }
 }

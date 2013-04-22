@@ -85,5 +85,6 @@ public class MasterListPanel extends HorizontalPanel implements CategoriesFetche
         vp.add(new InlineHTML("<br><hr><br>"));
         vp.add(refreshButton);
         this.add(vp);
+        DynamicRecruiter.RECRUIT_SERVICE.getRecruitList(event.getCategoryList(), new RecruitListLoadHandler());
     }
 }

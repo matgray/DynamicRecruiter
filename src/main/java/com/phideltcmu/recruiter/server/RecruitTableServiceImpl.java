@@ -29,12 +29,7 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
 
     @Override
     public List<Person> getRecruitList(List<Category> desiredCategories) {
-        try {
-            return recruitListDao.selectAll(desiredCategories);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return recruitListDao.selectAll(desiredCategories);
     }
 
     @Override
@@ -61,15 +56,17 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public AuthUser facebookLogin(String token) throws Exception {
+    public AuthUser facebookLogin(String token) {
         Facebook.isValid(token);
         User fbUser = Facebook.getUser(token);
-        return FacebookUserFactory.createAuthUser(fbUser);
+        AuthUser user = FacebookUserFactory.createAuthUser(fbUser);
+        user.setAdmin(recruitListDao.isAdmin(user.getId()));
+        return user;
     }
 
     @Override
-    public boolean addCategory(String name) {
-        //TODO: AUTHENTICATE ADMIN
+    public boolean addCategory(String name, String token) {
+        ensureAdmin(token);
         return recruitListDao.addCategory(name);
     }
 
@@ -80,19 +77,19 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
 
     @Override
     public void changeCategory(String andrewId, String newCategory, String token) {
-        //TODO: AUTHENTICATE ADMIN
+        ensureAdmin(token);
         recruitListDao.changeCategory(andrewId, newCategory);
     }
 
     @Override
     public void removeUser(String andrewID, String token) {
-        //TODO: AUTHENTICATE ADMIN
+        ensureAdmin(token);
         recruitListDao.delete(andrewID);
     }
 
     @Override
     public void saveNotes(String andrewID, String notes, String token) {
-        //TODO: MAYBE AUTHENTICATE ADMIN
+        ensureAdmin(token);
         recruitListDao.saveNotes(andrewID, notes);
     }
 
@@ -107,7 +104,7 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
 
     @Override
     public String setPhoneNumber(String andrewID, String number, String token) {
-        //TODO: MAYBE AUTHENTICATE ADMIN?
+        ensureAdmin(token);
         number = number.replaceAll("\\D+", "");
         if (number.length() != 10) {
             throw new IllegalStateException("Illegal Number");
@@ -116,5 +113,12 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
                 number.substring(6, 10));
         recruitListDao.updateTelephone(andrewID, number);
         return number;
+    }
+
+    private void ensureAdmin(String token) {
+        AuthUser u = facebookLogin(token);
+        if (!u.isAdmin()) {
+            throw new IllegalStateException("Admin Verification Failed");
+        }
     }
 }

@@ -29,7 +29,7 @@ public class CategoryNameChooser extends HidablePopup {
                     Window.alert("The category has to have at least 4 characters...");
                     return;
                 } else {
-                    DynamicRecruiter.RECRUIT_SERVICE.addCategory(inputBox.getText(), new AddCategoryHandler());
+                    DynamicRecruiter.RECRUIT_SERVICE.addCategory(inputBox.getText(), DynamicRecruiter.authUser.getAuthToken(), new AddCategoryHandler());
                     nameChooser.hide();
                 }
             }

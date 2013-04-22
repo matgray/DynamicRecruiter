@@ -19,9 +19,9 @@ public interface RecruitTableService extends RemoteService {
 
     List<Person> search(String text);
 
-    public AuthUser facebookLogin(String token) throws Exception;
+    public AuthUser facebookLogin(String token);
 
-    boolean addCategory(String name);
+    boolean addCategory(String name, String token);
 
     List<Category> getCategories();
 

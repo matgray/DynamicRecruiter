@@ -36,4 +36,6 @@ public interface IDao {
     String getNameFromInternalID(String internalID);
 
     void updateTelephone(String andrewID, String phoneNumber);
+
+    boolean isAdmin(String fbid);
 }

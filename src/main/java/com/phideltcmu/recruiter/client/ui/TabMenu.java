@@ -4,6 +4,7 @@ package com.phideltcmu.recruiter.client.ui;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.TabPanel;
+import com.phideltcmu.recruiter.client.DynamicRecruiter;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
 
 public class TabMenu extends TabPanel {
@@ -36,9 +37,11 @@ public class TabMenu extends TabPanel {
         /**
          * Add an admin tab
          */
-        AdminPanel adminPanel = new AdminPanel();
-        HTML adminText = new HTML("Admin");
-        this.add(adminPanel, adminText);
+        if (DynamicRecruiter.authUser.isAdmin()) {
+            AdminPanel adminPanel = new AdminPanel();
+            HTML adminText = new HTML("Admin");
+            this.add(adminPanel, adminText);
+        }
 
         this.selectTab(0);
     }

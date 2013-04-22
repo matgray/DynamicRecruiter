@@ -43,6 +43,14 @@ public class AuthUser implements Serializable {
         this.image = image;
     }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
     public String getFullName() {
         return this.firstName + " " + this.lastName;
     }
@@ -52,4 +60,5 @@ public class AuthUser implements Serializable {
     private String id;
     private String authToken;
     private String image;
+    private boolean isAdmin;
 }
