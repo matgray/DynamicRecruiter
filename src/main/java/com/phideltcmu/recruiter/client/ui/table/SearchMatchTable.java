@@ -5,10 +5,11 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.user.cellview.client.Column;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
 import com.phideltcmu.recruiter.client.handler.AddUserHandler;
+import com.phideltcmu.recruiter.client.ui.ExtraColumn;
 import com.phideltcmu.recruiter.shared.model.Person;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SearchMatchTable extends PersonTable {
     public SearchMatchTable() {
@@ -35,9 +36,8 @@ public class SearchMatchTable extends PersonTable {
             }
         });
 
-        Map<String, Column<Person, String>> extraCols = new HashMap<String, Column<Person, String>>();
-        extraCols.put("", addButtonColumn);
-
+        List<ExtraColumn> extraCols = new ArrayList<ExtraColumn>();
+        extraCols.add(new ExtraColumn("", addButtonColumn));
         this.initColumns(extraCols);
     }
 }

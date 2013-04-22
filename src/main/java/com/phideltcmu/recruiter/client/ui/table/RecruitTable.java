@@ -14,32 +14,66 @@ import com.phideltcmu.recruiter.client.event.CategoriesFetchedEventHandler;
 import com.phideltcmu.recruiter.client.event.RecruitTableFetchedEvent;
 import com.phideltcmu.recruiter.client.event.RecruitTableFetchedEventHandler;
 import com.phideltcmu.recruiter.client.handler.RemoveUserHandler;
+import com.phideltcmu.recruiter.client.ui.ExtraColumn;
 import com.phideltcmu.recruiter.client.ui.popup.PersonDetails;
 import com.phideltcmu.recruiter.shared.model.Category;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RecruitTable extends PersonTable implements RecruitTableFetchedEventHandler, CategoriesFetchedEventHandler {
-    private Map<String, Column<Person, String>> columnMap = new HashMap<String, Column<Person, String>>();
+    private List<ExtraColumn> extraColumns = new ArrayList<ExtraColumn>();
 
-    /**
-     * Get a cell value from a record.
-     *
-     * @param <C> the cell type
-     */
-    private static interface GetValue<C> {
-        C getValue(Person contact);
+    private void defineColumns() {
+
+        ButtonCell buttonCell = new ButtonCell() {
+            @Override
+            public boolean handlesSelection() {
+                return false;
+            }
+        };
+
+        Column<Person, String> detailsButton = new Column<Person, String>(buttonCell) {
+            @Override
+            public String getValue(Person person) {
+                return "View";
+            }
+        };
+
+        detailsButton.setFieldUpdater(new FieldUpdater<Person, String>() {
+            @Override
+            public void update(int i, Person person, String s) {
+                new PersonDetails(person).display();
+            }
+        });
+
+        extraColumns.add(new ExtraColumn("Details", detailsButton));
+
+        if (DynamicRecruiter.authUser.isAdmin()) {
+            Column<Person, String> deletePersonButton = new Column<Person, String>(buttonCell) {
+                @Override
+                public String getValue(Person person) {
+                    return "Delete";
+                }
+            };
+
+            deletePersonButton.setFieldUpdater(new FieldUpdater<Person, String>() {
+                @Override
+                public void update(int i, Person person, String s) {
+                    DynamicRecruiter.RECRUIT_SERVICE.removeUser(person.getAndrewID(), DynamicRecruiter.authUser.getAuthToken(), new RemoveUserHandler());
+                }
+            });
+
+            extraColumns.add(new ExtraColumn("Options", deletePersonButton));
+        }
+
     }
 
     public RecruitTable() {
         super();
         DynamicRecruiter.GLOBAL_EVENT_BUS.addHandler(RecruitTableFetchedEvent.TYPE, this);
         DynamicRecruiter.GLOBAL_EVENT_BUS.addHandler(CategoriesFetchedEvent.TYPE, this);
-
 
         // EditTextCell.
         EditTextCell editTextCell = new EditTextCell();
@@ -75,49 +109,9 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
             }
         });
 
-        columnMap.put("Phone Number", editTextColumn);
-
-        ButtonCell buttonCell = new ButtonCell() {
-            @Override
-            public boolean handlesSelection() {
-                return false;
-            }
-        };
-
-        if (DynamicRecruiter.authUser.isAdmin()) {
-            Column<Person, String> deletePersonButton = new Column<Person, String>(buttonCell) {
-                @Override
-                public String getValue(Person person) {
-                    return "Delete";
-                }
-            };
-
-            deletePersonButton.setFieldUpdater(new FieldUpdater<Person, String>() {
-                @Override
-                public void update(int i, Person person, String s) {
-                    DynamicRecruiter.RECRUIT_SERVICE.removeUser(person.getAndrewID(), DynamicRecruiter.authUser.getAuthToken(), new RemoveUserHandler());
-                }
-            });
-
-            columnMap.put("Options", deletePersonButton);
-        }
-
-        Column<Person, String> detailsButton = new Column<Person, String>(buttonCell) {
-            @Override
-            public String getValue(Person person) {
-                return "View";
-            }
-        };
-
-        detailsButton.setFieldUpdater(new FieldUpdater<Person, String>() {
-            @Override
-            public void update(int i, Person person, String s) {
-                new PersonDetails(person).display();
-            }
-        });
-
-        columnMap.put("Details", detailsButton);
+        extraColumns.add(new ExtraColumn("Phone Number", editTextColumn));
     }
+
 
     @Override
     public void onRecruitTableFetched(RecruitTableFetchedEvent event) {
@@ -160,7 +154,7 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
                             });
                 }
             });
-            columnMap.put("Status", categoryColumn);
+            extraColumns.add(new ExtraColumn("Status", categoryColumn));
         } else {
             TextColumn<Person> statusColumn = new TextColumn<Person>() {
                 @Override
@@ -168,8 +162,9 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
                     return person.getStatus();
                 }
             };
-            columnMap.put("Status", statusColumn);
+            extraColumns.add(new ExtraColumn("Status", statusColumn));
         }
-        this.initColumns(columnMap);
+        defineColumns();
+        this.initColumns(extraColumns);
     }
 }

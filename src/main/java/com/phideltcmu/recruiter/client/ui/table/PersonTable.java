@@ -1,15 +1,14 @@
 package com.phideltcmu.recruiter.client.ui.table;
 
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.view.client.ListDataProvider;
 import com.phideltcmu.recruiter.client.comparator.PersonComparators;
+import com.phideltcmu.recruiter.client.ui.ExtraColumn;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import java.util.List;
-import java.util.Map;
 
 public class PersonTable extends CellTable<Person> {
     private final TextColumn<Person> firstNameColumn;
@@ -95,7 +94,7 @@ public class PersonTable extends CellTable<Person> {
         this.initialized = true;
     }
 
-    public void initColumns(Map<String, Column<Person, String>> extraColumns) {
+    public void initColumns(List<ExtraColumn> extraColumns) {
         if (initialized) {
             throw new IllegalStateException("columns initialized multiple times!");
         }
@@ -103,8 +102,8 @@ public class PersonTable extends CellTable<Person> {
         /**
          * Set columns
          */
-        for (String colName : extraColumns.keySet()) {
-            this.addColumn(extraColumns.get(colName), colName);
+        for (ExtraColumn column : extraColumns) {
+            this.addColumn(column.getColumn(), column.getName());
         }
         initSorting();
         this.initialized = true;
@@ -119,4 +118,5 @@ public class PersonTable extends CellTable<Person> {
          */
         ColumnSortEvent.fire(this, this.getColumnSortList());
     }
+
 }
