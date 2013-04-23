@@ -5,5 +5,4 @@
 
     <import resource="database/Spring-Datasource.xml"/>
     <import resource="person/Spring-Person.xml"/>
-
 </beans>
