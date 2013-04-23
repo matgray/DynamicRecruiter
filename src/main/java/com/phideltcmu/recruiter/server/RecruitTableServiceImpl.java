@@ -22,7 +22,7 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         RecruitTableService {
-    private ApplicationContext context = new ClassPathXmlApplicationContext("/spring/Spring-Module.xml");
+    private ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 
     private RecruitListDao recruitListDao = (RecruitListDao) context.getBean("recruitListDao");
 
