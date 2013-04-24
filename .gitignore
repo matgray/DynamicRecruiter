@@ -1,4 +1,4 @@
 src/main/resources/database/Spring-Datasource.xml
-src/main/resources/mail/Spring-EmailAuthenticaiton.xml
+src/main/resources/Spring-EmailAuthenticaiton.xml
 DynamicRecruiter.iml
 .idea/

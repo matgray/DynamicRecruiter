@@ -38,4 +38,6 @@ public interface RecruitTableServiceAsync {
     void setUserAdminLevel(String internalID, boolean b, String token, AsyncCallback<Void> async);
 
     void getUserStats(AsyncCallback<List<InternalUserStat>> async);
+
+    void sendMail(String replyTo, String subject, String message, List<Category> categories, String token, AsyncCallback<Void> async);
 }

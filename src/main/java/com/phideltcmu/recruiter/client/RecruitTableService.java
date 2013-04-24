@@ -40,4 +40,6 @@ public interface RecruitTableService extends RemoteService {
     void setUserAdminLevel(String internalID, boolean b, String token);
 
     List<InternalUserStat> getUserStats();
+
+    void sendMail(String replyTo, String subject, String message, List<Category> categories, String token);
 }

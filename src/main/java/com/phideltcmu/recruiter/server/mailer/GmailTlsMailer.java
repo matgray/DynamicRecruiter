@@ -16,10 +16,6 @@ public class GmailTlsMailer {
 
         Properties config = createConfiguration();
 
-        //
-        // Creates a mail session. We need to supply username and
-        // password for Gmail authentication.
-        //
         Session session = Session.getInstance(config, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -30,9 +26,6 @@ public class GmailTlsMailer {
             }
         });
 
-        //
-        // Creates email message
-        //
         Message message = new MimeMessage(session);
         message.setSentDate(new Date());
         message.setFrom(new InternetAddress(mailFrom));
@@ -41,9 +34,6 @@ public class GmailTlsMailer {
         message.setSubject(mailSubject);
         message.setText(mailText);
 
-        //
-        // Send a message
-        //
         Transport.send(message);
     }
 

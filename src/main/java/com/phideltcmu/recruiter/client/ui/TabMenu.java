@@ -1,6 +1,8 @@
 package com.phideltcmu.recruiter.client.ui;
 
 
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -22,7 +24,7 @@ public class TabMenu extends TabPanel {
         /**
          * Add a table tab
          */
-        MasterListPanel masterListPanel = new MasterListPanel();
+        final MasterListPanel masterListPanel = new MasterListPanel();
         HTML tableText = new HTML("Table");
         this.add(masterListPanel, tableText);
 
@@ -44,12 +46,31 @@ public class TabMenu extends TabPanel {
         /**
          * Add an admin tab
          */
+//        if (DynamicRecruiter.authUser.isAdmin()) {
+//            AdminPanel adminPanel = new AdminPanel();
+//            HTML adminText = new HTML("Admin");
+//            this.add(adminPanel, adminText);
+//        }
+
+        /**
+         * Add a email tab if admin
+         */
         if (DynamicRecruiter.authUser.isAdmin()) {
-            AdminPanel adminPanel = new AdminPanel();
-            HTML adminText = new HTML("Admin");
-            this.add(adminPanel, adminText);
+            MailerPanel mailerPanel = new MailerPanel();
+            HTML mailerText = new HTML("Emailer");
+            this.add(mailerPanel, mailerText);
         }
 
         this.selectTab(0);
+
+        this.addSelectionHandler(new SelectionHandler<Integer>() {
+            @Override
+            public void onSelection(SelectionEvent<Integer> integerSelectionEvent) {
+                int tabId = integerSelectionEvent.getSelectedItem();
+                if (tabId == 1) {
+                    masterListPanel.refresh();
+                }
+            }
+        });
     }
 }

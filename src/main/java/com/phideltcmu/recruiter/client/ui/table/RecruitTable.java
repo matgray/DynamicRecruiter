@@ -9,8 +9,6 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
-import com.phideltcmu.recruiter.client.event.CategoriesFetchedEvent;
-import com.phideltcmu.recruiter.client.event.CategoriesFetchedEventHandler;
 import com.phideltcmu.recruiter.client.event.RecruitTableFetchedEvent;
 import com.phideltcmu.recruiter.client.event.RecruitTableFetchedEventHandler;
 import com.phideltcmu.recruiter.client.handler.RemoveUserHandler;
@@ -22,7 +20,7 @@ import com.phideltcmu.recruiter.shared.model.Person;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RecruitTable extends PersonTable implements RecruitTableFetchedEventHandler, CategoriesFetchedEventHandler {
+public class RecruitTable extends PersonTable implements RecruitTableFetchedEventHandler {
     private List<ExtraColumn> extraColumns = new ArrayList<ExtraColumn>();
 
     private void defineColumns() {
@@ -73,7 +71,6 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
     public RecruitTable() {
         super();
         DynamicRecruiter.GLOBAL_EVENT_BUS.addHandler(RecruitTableFetchedEvent.TYPE, this);
-        DynamicRecruiter.GLOBAL_EVENT_BUS.addHandler(CategoriesFetchedEvent.TYPE, this);
 
         // EditTextCell.
         EditTextCell editTextCell = new EditTextCell();
@@ -118,9 +115,7 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
         this.setData(event.getPersonList());
     }
 
-    @Override
-    public void onCategoriesFetched(CategoriesFetchedEvent event) {
-        final List<Category> categories = event.getCategoryList();
+    public void render(List<Category> categories) {
         final List<String> categoryNames = new ArrayList<String>();
         for (Category category : categories) {
             categoryNames.add(category.getValue());

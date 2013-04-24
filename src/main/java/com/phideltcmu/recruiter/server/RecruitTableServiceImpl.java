@@ -6,6 +6,7 @@ import com.phideltcmu.recruiter.server.auth.Facebook;
 import com.phideltcmu.recruiter.server.dao.RecruitListDao;
 import com.phideltcmu.recruiter.server.directory.CmuLdap;
 import com.phideltcmu.recruiter.server.factory.FacebookUserFactory;
+import com.phideltcmu.recruiter.server.mailer.GmailTlsMailer;
 import com.phideltcmu.recruiter.shared.model.*;
 import com.restfb.types.User;
 import com.unboundid.ldap.sdk.LDAPException;
@@ -22,9 +23,12 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         RecruitTableService {
-    private ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
 
+    private ApplicationContext context = new ClassPathXmlApplicationContext("Spring-Module.xml");
     private RecruitListDao recruitListDao = (RecruitListDao) context.getBean("recruitListDao");
+
+    private ApplicationContext emailContext = new ClassPathXmlApplicationContext("Spring-EmailAuthenticaiton.xml");
+    private GmailTlsMailer mailer = (GmailTlsMailer) emailContext.getBean("emailAuthentication");
 
     @Override
     public List<Person> getRecruitList(List<Category> desiredCategories) {
@@ -142,14 +146,28 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         return stats;
     }
 
-    private void ensureAdmin(String token) {
+    @Override
+    public void sendMail(String replyTo, String subject, String message, List<Category> categories, String token) {
+        ensureAdmin(token);
+        List<Person> emailList = getRecruitList(categories);
         try {
-            AuthUser u = facebookLogin(token);
-            if (!u.isAdmin()) {
-                throw new IllegalStateException("Admin Verification Failed");
+            for (Person p : emailList) {
+                mailer.sendMail(replyTo, emailFromId(p.getAndrewID()), subject, message);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            throw new IllegalStateException("There was a problem sending the emails");
+        }
+    }
+
+    private String emailFromId(String andrewID) {
+        return andrewID + "@andrew.cmu.edu";
+    }
+
+    private void ensureAdmin(String token) {
+        AuthUser u = facebookLogin(token);
+        if (!u.isAdmin()) {
+            throw new IllegalStateException("Admin Verification Failed");
         }
     }
 }
