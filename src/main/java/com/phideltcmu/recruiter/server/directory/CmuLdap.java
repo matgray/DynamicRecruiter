@@ -38,7 +38,7 @@ public class CmuLdap {
          * For each field, query the server
          */
         SearchResult searchResults = connection.search("ou=ANDREWPERSON,dc=ANDREW,dc=cmu,dc=edu",
-                SearchScope.SUB, "(|(cn=*" + searchText + "*)(cmuAndrewId=" + searchText + "))", fields[0], fields[1], fields[2], fields[3], fields[4]);
+                SearchScope.SUB, "(&(|(cn=*" + searchText + "*)(cmuAndrewId=" + searchText + "))(cmuStudentLevel=Undergrad))", fields[0], fields[1], fields[2], fields[3], fields[4]);
 
         /**
          * In the case that there are multiple entries for a field,
