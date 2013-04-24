@@ -44,4 +44,6 @@ public interface IDao {
     void setAdmin(String fbid, Boolean b);
 
     List<InternalUserStat> getStats();
+
+    boolean register(AuthUser user);
 }

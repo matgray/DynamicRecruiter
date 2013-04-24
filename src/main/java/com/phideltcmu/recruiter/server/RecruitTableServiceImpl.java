@@ -61,6 +61,7 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         AuthUser user = FacebookUserFactory.createAuthUser(fbUser);
         user.setAdmin(recruitListDao.isAdmin(user.getId()));
         user.setAuthToken(token);
+        recruitListDao.register(user);
         return user;
     }
 

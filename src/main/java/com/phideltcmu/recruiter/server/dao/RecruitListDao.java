@@ -65,6 +65,20 @@ public class RecruitListDao implements IDao {
     }
 
     @Override
+    public boolean register(AuthUser user) {
+        List<InternalUser> internalMatches = getInternalUser(user.getId());
+
+        if (internalMatches.size() == 0) {
+            jdbcTemplate.update("INSERT INTO recruitList.userList VALUES (default,?,default,?)",
+                    new Object[]{user.getFullName(), user.getId()});
+
+            internalMatches = getInternalUser(user.getId());
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean add(Person p, AuthUser user) {
         checkSingleton();
         List<Person> matches = jdbcTemplate.query("SELECT * FROM recruitList.infolist WHERE andrewid=?",
@@ -76,22 +90,7 @@ public class RecruitListDao implements IDao {
             return false;
         }
 
-        int id;
-
-        List<InternalUser> internalMatches = getInternalUser(user.getId());
-
-        if (internalMatches.size() == 0) {
-            jdbcTemplate.update("INSERT INTO recruitList.userList VALUES (default,?,default,?)",
-                    new Object[]{user.getFullName(), user.getId()});
-
-            internalMatches = getInternalUser(user.getId());
-        }
-
-        if (internalMatches.size() > 1 || internalMatches.size() == 0) {
-            throw new IllegalStateException("Problem adding internal user to DB");
-        }
-
-        id = internalMatches.get(0).getDatabaseID();
+        int id = getInternalUser(user.getId()).get(0).getDatabaseID();
 
         jdbcTemplate.update("INSERT INTO recruitList.infolist VALUES (?, ?, ?, default, ?, ?, default, default, default, ?)",
                 new Object[]{p.getLastName(), p.getFirstName(), p.getAndrewID(), p.getMajor(), p.getClassYear(), id});
@@ -142,22 +141,7 @@ public class RecruitListDao implements IDao {
     public void addToReferrals(String andrewid, String fbid) {
         checkSingleton();
 
-        List<String> referrers = jdbcTemplate.query("SELECT additionalReferrals FROM recruitList.infolist WHERE andrewid=?",
-                new Object[]{andrewid},
-                new ReferralRowMapper());
-
-        if (referrers.size() != 1) {
-            throw new IllegalStateException("Multiple Matches");
-        }
-
-        int len = referrers.get(0).length();
-
-        StringBuilder appendString = new StringBuilder();
-        if (len != 0) {
-            appendString = appendString.append(",");
-        }
-        appendString.append(getInternalUser(fbid).get(0).getDatabaseID());
-
+        String appendString = (getInternalUser(fbid).get(0).getDatabaseID()) + ",";
         jdbcTemplate.update("UPDATE recruitList.infolist SET additionalReferrals= CONCAT(additionalReferrals,?) WHERE andrewid=?",
                 new Object[]{appendString, andrewid});
     }
