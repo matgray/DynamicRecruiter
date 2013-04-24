@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 Mathew Gray.
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+ */
+
 package com.phideltcmu.recruiter.client.ui;
 
 import com.google.api.gwt.oauth2.client.Auth;
@@ -12,7 +17,7 @@ import com.phideltcmu.recruiter.client.handler.AuthenticationHandler;
 
 public class LoginPanel extends VerticalPanel {
     private final Image shield = new Image("images/pdt-shield.png");
-    private final Label warning = new Label("This Application's use is restricted");
+    private final Label warning = new Label("This application is not for public use");
 
     public LoginPanel() {
         super();

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+  ~ Copyright (c) 2013 Mathew Gray.
+  ~ This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+  -->
+
+<!--
   When updating your version of GWT, you should also update this DTD reference,
   so that your app can take advantage of the latest GWT module capabilities.
 -->

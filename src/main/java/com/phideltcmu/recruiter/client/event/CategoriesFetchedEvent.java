@@ -1,4 +1,9 @@
 /*
+ * Copyright (c) 2013 Mathew Gray.
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+ */
+
+/*
  * @author <a href="mailto:matgray@cmu.edu">Mat Gray</a>
  * Licensed under a Creative Commons
  * Attribution-NonCommercial-ShareAlike 3.0 Unported License.

@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 Mathew Gray.
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+ */
+
 package com.phideltcmu.recruiter.client;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -10,9 +15,6 @@ import com.phideltcmu.recruiter.client.ui.LoginPanel;
 import com.phideltcmu.recruiter.client.ui.TabMenu;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
 
-/**
- * Entry point classes define <code>onModuleLoad()</code>.
- */
 public class DynamicRecruiter implements EntryPoint, FacebookUserFetchedEventHandler {
     /**
      * The message displayed to the user when the server cannot be reached or

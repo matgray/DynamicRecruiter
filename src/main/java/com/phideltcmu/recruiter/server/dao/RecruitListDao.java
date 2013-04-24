@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2013 Mathew Gray.
+ * This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
+ */
+
 package com.phideltcmu.recruiter.server.dao;
 
 import com.phideltcmu.recruiter.server.dao.mapper.*;
@@ -40,7 +45,6 @@ public class RecruitListDao implements IDao {
 
     @Override
     public List<Person> selectAll(List<Category> desiredCategories) {
-        //TODO FIX CATS
         checkSingleton();
 
         List<String> list = new ArrayList<String>();
