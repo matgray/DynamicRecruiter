@@ -11,7 +11,7 @@ public class InternalUserSetExtractor implements ResultSetExtractor {
     @Override
     public Object extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         InternalUser user = new InternalUser();
-        user.setDatabaseID(1);
+        user.setDatabaseID(resultSet.getInt(1));
         user.setName(resultSet.getString(2));
         user.setAdmin(resultSet.getBoolean(3));
         return user;
