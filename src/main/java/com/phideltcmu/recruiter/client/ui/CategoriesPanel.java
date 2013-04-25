@@ -25,7 +25,8 @@ import java.util.Map;
 
 public class CategoriesPanel extends VerticalPanel implements CategoriesFetchedEventHandler {
     private SimpleEventBus privateEventBus = new SimpleEventBus();
-    private Map<String, Boolean> checkMap = new HashMap<String, Boolean>();
+    private Map<String, Boolean> checkBooleanMap = new HashMap<String, Boolean>();
+    private Map<String, CheckBox> checkMap = new HashMap<String, CheckBox>();
     private SimpleEventBus postFetchFireBus;
     private Label header;
     private boolean defaultCheck;
@@ -60,12 +61,13 @@ public class CategoriesPanel extends VerticalPanel implements CategoriesFetchedE
             CheckBox checkBox = new CheckBox(categoryName);
             checkBox.setEnabled(true);
             checkBox.setValue(defaultCheck);
-            checkMap.put(c.getValue(), true);
+            checkBooleanMap.put(categoryName, true);
+            checkMap.put(c.getValue(), checkBox);
 
             checkBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
                 @Override
                 public void onValueChange(ValueChangeEvent<Boolean> booleanValueChangeEvent) {
-                    checkMap.put(c.getValue(), !checkMap.get(categoryName));
+                    checkBooleanMap.put(categoryName, !checkBooleanMap.get(categoryName));
                 }
             });
             vp.add(checkBox);
@@ -75,7 +77,14 @@ public class CategoriesPanel extends VerticalPanel implements CategoriesFetchedE
         postFetchFireBus.fireEvent(new CategoriesPanelLoadedEvent(event.getCategoryList()));
     }
 
-    public Map<String, Boolean> getCheckMap() {
-        return checkMap;
+    public Map<String, Boolean> getCheckBooleanMap() {
+        return checkBooleanMap;
+    }
+
+    public void setCategory(String s, Boolean b) {
+        CheckBox c = checkMap.get(s);
+        if (c != null) {
+            c.setValue(b);
+        }
     }
 }
