@@ -17,10 +17,13 @@ public class WelcomePanel extends VerticalPanel {
         this.setVerticalAlignment(VerticalPanel.ALIGN_MIDDLE);
 
         Label letters = new Label("ΦΔΘ");
+        Label chapter = new Label("PA RHO");
         Label welcome = new Label("You are logged in as: " + user.getFullName());
         letters.setStyleName("oldenburg500");
+        chapter.setStyleName("oldenburg150");
         welcome.setStyleName("oldenburg150");
         this.add(letters);
+        this.add(chapter);
         this.add(welcome);
     }
 }
