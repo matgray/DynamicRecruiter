@@ -14,8 +14,11 @@ import java.util.Properties;
 public class GmailTlsMailer {
     private String username;
     private String password;
+    private String replyTo;
+    private String host;
+    private String port;
 
-    public void sendMail(String mailFrom, String mailTo,
+    public void sendMail(String mailTo,
                          String mailSubject, String mailText)
             throws Exception {
 
@@ -33,7 +36,7 @@ public class GmailTlsMailer {
 
         Message message = new MimeMessage(session);
         message.setSentDate(new Date());
-        message.setFrom(new InternetAddress(mailFrom));
+        message.setFrom(new InternetAddress(replyTo));
         message.setRecipient(Message.RecipientType.TO,
                 new InternetAddress(mailTo));
         message.setSubject(mailSubject);
@@ -57,5 +60,17 @@ public class GmailTlsMailer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public void setPort(String port) {
+        this.port = port;
     }
 }
