@@ -5,8 +5,9 @@
 
 package com.phideltcmu.recruiter.client.handler;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.phideltcmu.recruiter.client.DynamicRecruiter;
+import com.phideltcmu.recruiter.client.event.UserDeletedEvent;
 
 public class RemoveUserHandler implements AsyncCallback<Void> {
     @Override
@@ -15,6 +16,6 @@ public class RemoveUserHandler implements AsyncCallback<Void> {
 
     @Override
     public void onSuccess(Void aVoid) {
-        Window.alert("Delete Successful!");
+        DynamicRecruiter.GLOBAL_EVENT_BUS.fireEvent(new UserDeletedEvent());
     }
 }

@@ -15,14 +15,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
 import com.phideltcmu.recruiter.client.event.CategoriesPanelLoadedEvent;
 import com.phideltcmu.recruiter.client.event.CategoriesPanelLoadedEventHandler;
+import com.phideltcmu.recruiter.client.event.UserDeletedEvent;
+import com.phideltcmu.recruiter.client.event.UserDeletedEventHandler;
 import com.phideltcmu.recruiter.client.handler.RecruitListLoadHandler;
 import com.phideltcmu.recruiter.client.ui.table.RecruitTable;
 import com.phideltcmu.recruiter.shared.model.Category;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MasterListPanel extends HorizontalPanel implements CategoriesPanelLoadedEventHandler {
+public class MasterListPanel extends HorizontalPanel implements CategoriesPanelLoadedEventHandler, UserDeletedEventHandler {
     private Button refreshButton = new Button("Refresh Table");
     private VerticalPanel vp = new VerticalPanel();
     private SimpleEventBus privateEventBus = new SimpleEventBus();
@@ -40,20 +41,16 @@ public class MasterListPanel extends HorizontalPanel implements CategoriesPanelL
         this.add(vp);
 
         privateEventBus.addHandler(CategoriesPanelLoadedEvent.TYPE, this);
+        DynamicRecruiter.GLOBAL_EVENT_BUS.addHandler(UserDeletedEvent.TYPE, this);
 
         refreshButton.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                if (categoriesPanel.getCheckMap().size() == 0) {
+                if (categoriesPanel.getCheckBooleanMap().size() == 0) {
                     Window.alert("Categories not yet known");
                     return;
                 }
-                List<Category> categories = new ArrayList<Category>();
-                for (String s : categoriesPanel.getCheckMap().keySet()) {
-                    if (categoriesPanel.getCheckMap().get(s)) {
-                        categories.add(new Category(s));
-                    }
-                }
+                List<Category> categories = CategoriesPanel.filterCategories(categoriesPanel.getCheckBooleanMap());
                 DynamicRecruiter.RECRUIT_SERVICE.getRecruitList(categories, new RecruitListLoadHandler());
                 lastCategories = categories;
             }
@@ -62,12 +59,18 @@ public class MasterListPanel extends HorizontalPanel implements CategoriesPanelL
 
     @Override
     public void onCategoryPanelLoaded(CategoriesPanelLoadedEvent event) {
-        DynamicRecruiter.RECRUIT_SERVICE.getRecruitList(event.getCategoryList(), new RecruitListLoadHandler());
+        categoriesPanel.setCategory("Brother", false);
+        lastCategories = CategoriesPanel.filterCategories(categoriesPanel.getCheckBooleanMap());
+        DynamicRecruiter.RECRUIT_SERVICE.getRecruitList(lastCategories, new RecruitListLoadHandler());
         recruitTable.render(event.getCategoryList());
-        lastCategories = event.getCategoryList();
     }
 
     public void refresh() {
         DynamicRecruiter.RECRUIT_SERVICE.getRecruitList(lastCategories, new RecruitListLoadHandler());
+    }
+
+    @Override
+    public void onUserDeleted() {
+        refresh();
     }
 }
