@@ -41,16 +41,19 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public boolean addPerson(Person p, AuthUser user) {
+    public String addPerson(Person p, AuthUser user) {
         try {
+            /**
+             * If already in database
+             */
             if (!recruitListDao.add(p, user)) {
-                recruitListDao.addToReferrals(p.getAndrewID(), user.getId());
+                return recruitListDao.addToReferrals(p.getAndrewID(), user.getId());
             }
-            return true;
+            return "Added";
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return "There was a problem";
     }
 
     @Override
@@ -114,13 +117,15 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
 
     @Override
     public String setPhoneNumber(String andrewID, String number, String token) {
-        ensureAdmin(token);
+//        ensureAdmin(token);
         number = number.replaceAll("\\D+", "");
-        if (number.length() != 10) {
+        if (number.length() != 10 && number.length() != 0) {
             throw new IllegalStateException("Illegal Number");
         }
-        number = String.format("(%s) %s-%s", number.substring(0, 3), number.substring(3, 6),
-                number.substring(6, 10));
+        if (number.length() == 10) {
+            number = String.format("(%s) %s-%s", number.substring(0, 3), number.substring(3, 6),
+                    number.substring(6, 10));
+        }
         recruitListDao.updateTelephone(andrewID, number);
         return number;
     }

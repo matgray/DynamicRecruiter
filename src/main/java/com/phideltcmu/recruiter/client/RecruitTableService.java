@@ -18,7 +18,7 @@ import java.util.List;
 public interface RecruitTableService extends RemoteService {
     List<Person> getRecruitList(List<Category> desiredCategories);
 
-    boolean addPerson(Person p, AuthUser user);
+    String addPerson(Person p, AuthUser user);
 
     List<Person> search(String text);
 

@@ -141,12 +141,22 @@ public class RecruitListDao implements IDao {
     }
 
     @Override
-    public void addToReferrals(String andrewid, String fbid) {
+    public String addToReferrals(String andrewid, String fbid) {
         checkSingleton();
+
+        InternalUser iu = getInternalUser(fbid).get(0);
+
+        List<String> referrals = jdbcTemplate.query("SELECT additionalReferrals FROM recruitList.infolist WHERE andrewid=?",
+                new Object[]{andrewid}, new AdditionalReferralRowMapper());
+
+        if (referrals.get(0).contains(Integer.toString(iu.getDatabaseID()))) {
+            return "Already Referred";
+        }
 
         String appendString = (getInternalUser(fbid).get(0).getDatabaseID()) + ",";
         jdbcTemplate.update("UPDATE recruitList.infolist SET additionalReferrals= CONCAT(additionalReferrals,?) WHERE andrewid=?",
                 new Object[]{appendString, andrewid});
+        return "Already Exists - Reference Added";
     }
 
     private List<InternalUser> getInternalUser(String fbID) {

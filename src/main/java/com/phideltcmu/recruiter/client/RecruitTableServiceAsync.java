@@ -16,7 +16,7 @@ import java.util.List;
 public interface RecruitTableServiceAsync {
     void getRecruitList(List<Category> desiredCategorie, AsyncCallback<List<Person>> async);
 
-    void addPerson(Person p, AuthUser user, AsyncCallback<Boolean> async);
+    void addPerson(Person p, AuthUser user, AsyncCallback<String> async);
 
     void search(String text, AsyncCallback<List<Person>> async);
 

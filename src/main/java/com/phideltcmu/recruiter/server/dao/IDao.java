@@ -34,7 +34,7 @@ public interface IDao {
 
     void saveNotes(String andrewID, String Notes);
 
-    void addToReferrals(String andrewID, String id);
+    String addToReferrals(String andrewID, String id);
 
     String getNameFromInternalID(String internalID);
 
