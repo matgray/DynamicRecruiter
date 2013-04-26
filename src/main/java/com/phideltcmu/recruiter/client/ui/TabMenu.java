@@ -44,7 +44,7 @@ public class TabMenu extends TabPanel {
         /**
          * Add a leaderboard
          */
-        LeaderboardPanel leaderboardPanel = new LeaderboardPanel();
+        final LeaderboardPanel leaderboardPanel = new LeaderboardPanel();
         HTML leaderboardText = new HTML("Leaderboard");
         this.add(leaderboardPanel, leaderboardText);
 
@@ -74,6 +74,9 @@ public class TabMenu extends TabPanel {
                 int tabId = integerSelectionEvent.getSelectedItem();
                 if (tabId == 1) {
                     masterListPanel.refresh();
+                }
+                if (tabId == 3) {
+                    leaderboardPanel.refresh();
                 }
             }
         });
