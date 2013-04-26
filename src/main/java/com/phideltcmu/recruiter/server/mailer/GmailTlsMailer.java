@@ -40,7 +40,7 @@ public class GmailTlsMailer {
         message.setRecipient(Message.RecipientType.TO,
                 new InternetAddress(mailTo));
         message.setSubject(mailSubject);
-        message.setText(mailText);
+        message.setContent(mailText, "text/html");
 
         Transport.send(message);
     }
