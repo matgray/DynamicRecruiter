@@ -9,16 +9,14 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.InlineHTML;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.*;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
 import com.phideltcmu.recruiter.client.event.CategoriesFetchedEvent;
 import com.phideltcmu.recruiter.client.event.CategoriesFetchedEventHandler;
 import com.phideltcmu.recruiter.client.event.CategoriesPanelLoadedEvent;
 import com.phideltcmu.recruiter.shared.model.Category;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +28,11 @@ public class CategoriesPanel extends VerticalPanel implements CategoriesFetchedE
     private SimpleEventBus postFetchFireBus;
     private Label header;
     private boolean defaultCheck;
+    private Image loading = new Image("images/ajax-loader.gif");
 
     public CategoriesPanel(SimpleEventBus postFetchFireBus, String headerText, boolean defaultCheck) {
         super();
+        this.add(loading);
         privateEventBus.addHandler(CategoriesFetchedEvent.TYPE, this);
         this.postFetchFireBus = postFetchFireBus;
         this.header = new Label(headerText);
@@ -53,6 +53,7 @@ public class CategoriesPanel extends VerticalPanel implements CategoriesFetchedE
 
     @Override
     public void onCategoriesFetched(CategoriesFetchedEvent event) {
+        this.remove(loading);
         VerticalPanel vp = new VerticalPanel();
         vp.add(header);
         vp.add(new InlineHTML("<br><hr><br>"));
@@ -61,7 +62,7 @@ public class CategoriesPanel extends VerticalPanel implements CategoriesFetchedE
             CheckBox checkBox = new CheckBox(categoryName);
             checkBox.setEnabled(true);
             checkBox.setValue(defaultCheck);
-            checkBooleanMap.put(categoryName, true);
+            checkBooleanMap.put(categoryName, defaultCheck);
             checkMap.put(c.getValue(), checkBox);
 
             checkBox.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
@@ -85,6 +86,17 @@ public class CategoriesPanel extends VerticalPanel implements CategoriesFetchedE
         CheckBox c = checkMap.get(s);
         if (c != null) {
             c.setValue(b);
+            checkBooleanMap.put(s, b);
         }
+    }
+
+    public static List<Category> filterCategories(Map<String, Boolean> booleanMap) {
+        List<Category> categories = new ArrayList<Category>();
+        for (String s : booleanMap.keySet()) {
+            if (booleanMap.get(s)) {
+                categories.add(new Category(s));
+            }
+        }
+        return categories;
     }
 }
