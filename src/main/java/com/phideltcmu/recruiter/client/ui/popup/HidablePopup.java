@@ -33,4 +33,10 @@ public class HidablePopup extends PopupPanel {
         this.setGlassEnabled(true);
         this.center();
     }
+
+    final public void display(String closeText) {
+        closeButton.setText(closeText);
+        this.setGlassEnabled(true);
+        this.center();
+    }
 }
