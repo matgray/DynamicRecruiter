@@ -11,6 +11,7 @@ import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.*;
 import com.phideltcmu.recruiter.client.event.FacebookUserFetchedEvent;
 import com.phideltcmu.recruiter.client.event.FacebookUserFetchedEventHandler;
+import com.phideltcmu.recruiter.client.handler.AuthenticationHandler;
 import com.phideltcmu.recruiter.client.ui.LoginPanel;
 import com.phideltcmu.recruiter.client.ui.TabMenu;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
@@ -77,5 +78,6 @@ public class DynamicRecruiter implements EntryPoint, FacebookUserFetchedEventHan
         TabMenu tabMenu = new TabMenu(authUser);
         tabMenu.setStyleName("fadeMe");
         stateManager.switchToWidget(tabMenu);
+        AuthenticationHandler.loadingScreen.hide();
     }
 }
