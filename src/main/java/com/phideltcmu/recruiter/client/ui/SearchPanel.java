@@ -19,9 +19,10 @@ public class SearchPanel extends VerticalPanel implements SearchCompletedEventHa
     Button searchButton = new Button("Search");
     TextBox searchField = new TextBox();
     private SimpleEventBus privateEventBus = new SimpleEventBus();
-    private SearchMatchTable table = new SearchMatchTable();
     private Label noResults = new Label("Your query returned no results");
     private static SearchingPopup searchingPopup = new SearchingPopup();
+    private Label addConfirmation = new Label();
+    private SearchMatchTable table = new SearchMatchTable(addConfirmation);
 
     public SearchPanel() {
         privateEventBus.addHandler(SearchCompletedEvent.TYPE, this);
@@ -59,6 +60,8 @@ public class SearchPanel extends VerticalPanel implements SearchCompletedEventHa
         DecoratorPanel infoPanel = new DecoratorPanel();
         infoPanel.setWidget(layout);
         this.add(infoPanel);
+        this.add(new InlineHTML("<br>"));
+        this.add(addConfirmation);
         this.add(new InlineHTML("<br><br>"));
         this.add(table);
 

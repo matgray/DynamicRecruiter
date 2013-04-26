@@ -27,6 +27,7 @@ import java.util.List;
 
 public class RecruitTable extends PersonTable implements RecruitTableFetchedEventHandler {
     private List<ExtraColumn> extraColumns = new ArrayList<ExtraColumn>();
+    private List<Person> personList = null;
 
     private void defineColumns() {
 
@@ -80,19 +81,19 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
         // EditTextCell.
         EditTextCell editTextCell = new EditTextCell();
 
-        Column<Person, String> editTextColumn = new Column<Person, String>(editTextCell) {
+        Column<Person, String> phoneNumberColumn = new Column<Person, String>(editTextCell) {
             @Override
             public String getValue(Person person) {
                 String phoneNumber = person.getPhoneNumber();
-                return phoneNumber == null ? "N/A" : phoneNumber;
+                return phoneNumber.length() == 0 ? "N/A" : phoneNumber;
             }
         };
 
-        editTextColumn.setFieldUpdater(new FieldUpdater<Person, String>() {
+        phoneNumberColumn.setFieldUpdater(new FieldUpdater<Person, String>() {
             @Override
             public void update(int i, final Person person, String s) {
                 String number = s.replaceAll("\\D+", "");
-                if (number.length() == 10) {
+                if (number.length() == 10 || number.length() == 0) {
                     DynamicRecruiter.RECRUIT_SERVICE.setPhoneNumber(person.getAndrewID(), number, DynamicRecruiter.authUser.getAuthToken(), new AsyncCallback<String>() {
                         @Override
                         public void onFailure(Throwable throwable) {
@@ -102,7 +103,6 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
                         @Override
                         public void onSuccess(String formattedNumber) {
                             person.setPhoneNumber(formattedNumber);
-                            Window.alert("Number Changed!");
                         }
                     });
                 } else {
@@ -111,13 +111,13 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
             }
         });
 
-        extraColumns.add(new ExtraColumn("Phone Number", editTextColumn));
+        extraColumns.add(new ExtraColumn("Phone Number", phoneNumberColumn));
     }
-
 
     @Override
     public void onRecruitTableFetched(RecruitTableFetchedEvent event) {
-        this.setData(event.getPersonList());
+        this.personList = event.getPersonList();
+        this.setData(personList);
     }
 
     public void render(List<Category> categories) {
