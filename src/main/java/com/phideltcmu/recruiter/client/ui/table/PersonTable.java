@@ -80,6 +80,12 @@ public class PersonTable extends CellTable<Person> {
         this.addColumnSortHandler(lastNameSortHandler);
         this.getColumn(0).setSortable(true);
         this.getColumnSortList().push(lastNameColumn);
+
+//        ColumnSortEvent.ListHandler<Person> majorSortHandler =
+//                new ColumnSortEvent.ListHandler<Person>(dataProviderList);
+//        lastNameSortHandler.setComparator(majorColumn, PersonComparators.departmentComparator);
+//        this.addColumnSortHandler(majorSortHandler);
+//        this.getColumn(4).setSortable(true);
     }
 
     private void initDefaultColumns() {
@@ -117,6 +123,7 @@ public class PersonTable extends CellTable<Person> {
     final public void setData(List<Person> personList) {
         dataProviderList.clear();
         dataProviderList.addAll(personList);
+        this.setVisibleRange(0, personList.size());
 
         /**
          * Default sort by last name
