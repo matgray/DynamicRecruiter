@@ -6,6 +6,7 @@
 package com.phideltcmu.recruiter.client.handler;
 
 import com.google.api.gwt.oauth2.client.Callback;
+import com.google.gwt.user.client.Window;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
 import com.phideltcmu.recruiter.client.ui.popup.LoadingPopup;
 
@@ -20,11 +21,11 @@ public class AuthenticationHandler implements Callback<String, Throwable> {
     public void onFailure(Throwable throwable) {
         loadingScreen.hide();
         throwable.printStackTrace();
+        Window.alert("There was an error authenticating");
     }
 
     @Override
     public void onSuccess(String token) {
-        loadingScreen.hide();
         DynamicRecruiter.RECRUIT_SERVICE.facebookLogin(token, new UserFetchedEventHandler());
     }
 }
