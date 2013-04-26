@@ -32,6 +32,11 @@ public class InternalUserStat implements Serializable {
         this.uniqueAdditions = uniqueAdditions;
     }
 
+    @Override
+    public boolean equals(Object o2) {
+        return o2 instanceof InternalUserStat && this.getInternalID() == ((InternalUserStat) o2).getInternalID();
+    }
+
     private int internalID;
     private int uniqueAdditions;
     private String name;

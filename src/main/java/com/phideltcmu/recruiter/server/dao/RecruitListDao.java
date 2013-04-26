@@ -76,7 +76,6 @@ public class RecruitListDao implements IDao {
             jdbcTemplate.update("INSERT INTO recruitList.userList VALUES (default,?,default,?)",
                     new Object[]{user.getFullName(), user.getId()});
 
-            internalMatches = getInternalUser(user.getId());
             return true;
         }
         return false;
@@ -211,7 +210,22 @@ public class RecruitListDao implements IDao {
     @Override
     public List<InternalUserStat> getStats() {
         checkSingleton();
-        return jdbcTemplate.query("SELECT referredBy, COUNT(*) FROM recruitList.infolist GROUP BY referredBy",
+        List<InternalUserStat> posAdditions = jdbcTemplate.query("SELECT referredBy, COUNT(*) FROM recruitList.infolist GROUP BY referredBy",
                 new StatCountRowMapper());
+
+        List<InternalUserStat> zeroAdditons = jdbcTemplate.query("SELECT id FROM recruitList.userList",
+                new StatZeroRowMapper());
+
+        /**
+         * Get the users with 0 additions
+         * This will pr
+         */
+        for (InternalUserStat s : zeroAdditons) {
+            if (!posAdditions.contains(s)) {
+                posAdditions.add(s);
+            }
+        }
+
+        return posAdditions;
     }
 }
