@@ -149,7 +149,7 @@ public class RecruitTable extends PersonTable implements RecruitTableFetchedEven
 
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Window.alert("Status Updated!");
+//                                    Window.alert("Status Updated!");
                                 }
                             });
                 }
