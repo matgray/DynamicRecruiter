@@ -59,7 +59,7 @@ public class MailSendPopup extends HidablePopup {
                     @Override
                     public void onClick(ClickEvent clickEvent) {
                         caller.sendMail();
-                        lp.show();
+                        lp.center();
                     }
                 });
                 vp.add(new InlineHTML("<br><hr><br>"));
