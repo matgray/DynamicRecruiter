@@ -5,6 +5,7 @@
 
 package com.phideltcmu.recruiter.client.ui;
 
+import com.google.gwt.user.client.ui.InlineHTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.phideltcmu.recruiter.shared.model.AuthUser;
@@ -24,6 +25,7 @@ public class WelcomePanel extends VerticalPanel {
         welcome.setStyleName("oldenburg150");
         this.add(letters);
         this.add(chapter);
+        this.add(new InlineHTML("<br><hr><br>"));
         this.add(welcome);
     }
 }
