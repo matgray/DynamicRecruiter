@@ -5,8 +5,7 @@
 
 package com.phideltcmu.recruiter.client.ui;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.*;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.*;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
@@ -67,6 +66,16 @@ public class SearchPanel extends VerticalPanel implements SearchCompletedEventHa
         this.add(noResults);
         this.table.setVisible(false);
         this.noResults.setVisible(false);
+        this.searchField.addKeyPressHandler(new SearchSubmitHandler());
+    }
+
+    private class SearchSubmitHandler implements KeyPressHandler {
+        @Override
+        public void onKeyPress(KeyPressEvent keyPressEvent) {
+            if (keyPressEvent.getCharCode() == KeyCodes.KEY_ENTER) {
+                searchButton.click();
+            }
+        }
     }
 
     @Override
