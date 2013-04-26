@@ -152,12 +152,12 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public void sendMail(String replyTo, String subject, String message, List<Category> categories, String token) {
+    public void sendMail(String subject, String message, List<Category> categories, String token) {
         ensureAdmin(token);
         List<Person> emailList = getRecruitList(categories);
         try {
             for (Person p : emailList) {
-                mailer.sendMail(replyTo, emailFromId(p.getAndrewID()), subject, message);
+                mailer.sendMail(emailFromId(p.getAndrewID()), subject, message);
             }
         } catch (Exception e) {
             e.printStackTrace();

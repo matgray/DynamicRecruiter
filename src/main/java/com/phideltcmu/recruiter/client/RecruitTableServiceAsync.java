@@ -44,5 +44,5 @@ public interface RecruitTableServiceAsync {
 
     void getUserStats(AsyncCallback<List<InternalUserStat>> async);
 
-    void sendMail(String replyTo, String subject, String message, List<Category> categories, String token, AsyncCallback<Void> async);
+    void sendMail(String subject, String message, List<Category> categories, String token, AsyncCallback<Void> async);
 }

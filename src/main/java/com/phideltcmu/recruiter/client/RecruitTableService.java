@@ -46,5 +46,5 @@ public interface RecruitTableService extends RemoteService {
 
     List<InternalUserStat> getUserStats();
 
-    void sendMail(String replyTo, String subject, String message, List<Category> categories, String token);
+    void sendMail(String subject, String message, List<Category> categories, String token);
 }
