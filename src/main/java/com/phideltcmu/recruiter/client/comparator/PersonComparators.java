@@ -17,4 +17,11 @@ public class PersonComparators {
             return o1.getLastName().compareTo(o2.getLastName());
         }
     };
+
+    public static Comparator<Person> departmentComparator = new Comparator<Person>() {
+        @Override
+        public int compare(Person o1, Person o2) {
+            return o1.getMajor().compareTo(o2.getMajor());
+        }
+    };
 }

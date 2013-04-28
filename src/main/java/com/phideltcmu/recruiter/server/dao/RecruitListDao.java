@@ -110,7 +110,6 @@ public class RecruitListDao implements IDao {
                 new PersonRowMapper());
 
         if (matches.size() != 0) {
-            System.out.println("Status is already in DB");
             return false;
         } else {
             jdbcTemplate.update("INSERT INTO recruitList.statuses VALUES (?)",

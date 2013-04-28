@@ -68,7 +68,9 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
 
     @Override
     public AuthUser facebookLogin(String token) {
-        Facebook.isValid(token);
+        if (!Facebook.isValid(token)) {
+            throw new IllegalAccessError();
+        }
         User fbUser = Facebook.getUser(token);
         AuthUser user = FacebookUserFactory.createAuthUser(fbUser);
         user.setAdmin(recruitListDao.isAdmin(user.getId()));
