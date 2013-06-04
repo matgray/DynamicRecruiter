@@ -27,16 +27,16 @@ public class HidablePopup extends PopupPanel {
             }
         });
         this.setWidget(vp);
+        this.setAutoHideEnabled(true);
+        this.setStyleName("darkPopup");
     }
 
     final public void display() {
-        this.setGlassEnabled(true);
         this.center();
     }
 
     final public void display(String closeText) {
         closeButton.setText(closeText);
-        this.setGlassEnabled(true);
         this.center();
     }
 }
