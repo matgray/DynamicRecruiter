@@ -32,7 +32,28 @@ public class CmuLdap {
      */
     public static List<Person> getAttributes(String searchText) throws
             LDAPException {
+        String query = "(&(|(cn=*" + searchText + "*)(cmuAndrewId=" + searchText + "))(cmuStudentLevel=Undergrad))";
+        return queryLDAP(query);
+    }
 
+
+    /**
+     * Get the fields by only querying the andrewID
+     *
+     * @param andrewID
+     * @return
+     * @throws LDAPException
+     */
+    public static Person getAttributesStrictlyByAndrewID(String andrewID) throws LDAPException {
+        String query = "(&(cmuAndrewId=" + andrewID + ")(cmuStudentLevel=Undergrad))";
+        List<Person> matches = queryLDAP(query);
+        if (matches.size() == 0) {
+            return null;
+        }
+        return matches.get(0);
+    }
+
+    private static List<Person> queryLDAP(String query) throws LDAPException {
         List<Person> matchList = new ArrayList<Person>(5);
         /**
          * Create a new connection
@@ -43,7 +64,7 @@ public class CmuLdap {
          * For each field, query the server
          */
         SearchResult searchResults = connection.search("ou=ANDREWPERSON,dc=ANDREW,dc=cmu,dc=edu",
-                SearchScope.SUB, "(&(|(cn=*" + searchText + "*)(cmuAndrewId=" + searchText + "))(cmuStudentLevel=Undergrad))", fields[0], fields[1], fields[2], fields[3], fields[4]);
+                SearchScope.SUB, query, fields[0], fields[1], fields[2], fields[3], fields[4]);
 
         /**
          * In the case that there are multiple entries for a field,
