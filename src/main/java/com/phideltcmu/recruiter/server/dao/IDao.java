@@ -7,6 +7,7 @@ package com.phideltcmu.recruiter.server.dao;
 
 
 import com.phideltcmu.recruiter.shared.model.*;
+import com.unboundid.ldap.sdk.LDAPException;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -51,4 +52,6 @@ public interface IDao {
     List<InternalUserStat> getStats();
 
     boolean register(AuthUser user);
+
+    void updateList() throws LDAPException;
 }

@@ -172,6 +172,16 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
         }
     }
 
+    @Override
+    public void updateRecruitList(String token) {
+        ensureAdmin(token);
+        try {
+            recruitListDao.updateList();
+        } catch (LDAPException e) {
+            throw new IllegalStateException("Can not connect to CMU LDAP");
+        }
+    }
+
     private String emailFromId(String andrewID) {
         return andrewID + "@andrew.cmu.edu";
     }

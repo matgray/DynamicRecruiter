@@ -6,7 +6,9 @@
 package com.phideltcmu.recruiter.server.dao;
 
 import com.phideltcmu.recruiter.server.dao.mapper.*;
+import com.phideltcmu.recruiter.server.directory.CmuLdap;
 import com.phideltcmu.recruiter.shared.model.*;
+import com.unboundid.ldap.sdk.LDAPException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -82,6 +84,27 @@ public class RecruitListDao implements IDao {
     }
 
     @Override
+    public void updateList() throws LDAPException {
+        checkSingleton();
+        List<Person> matches = jdbcTemplate.query("SELECT * FROM recruitList.infolist",
+                new PersonRowMapper());
+        for (Person p : matches) {
+            Person newPerson = CmuLdap.getAttributesStrictlyByAndrewID(p.getAndrewID());
+            /**
+             * Delete people that are no longer at CMU
+             * (also deletes if no longer undergrad)
+             */
+            if (newPerson == null) {
+                System.out.println("Deleting andrew id " + p.getAndrewID() + " from table");
+                delete(p.getAndrewID());
+                continue;
+            }
+            jdbcTemplate.update("UPDATE recruitList.infolist SET lastname=?,firstname=?,classyear=?,major=? WHERE andrewid=?",
+                    new Object[]{newPerson.getLastName(), newPerson.getFirstName(), newPerson.getClassYear(), newPerson.getMajor(), newPerson.getAndrewID()});
+        }
+    }
+
+    @Override
     public boolean add(Person p, AuthUser user) {
         checkSingleton();
         List<Person> matches = jdbcTemplate.query("SELECT * FROM recruitList.infolist WHERE andrewid=?",
@@ -144,6 +167,7 @@ public class RecruitListDao implements IDao {
         checkSingleton();
 
         InternalUser iu = getInternalUser(fbid).get(0);
+
 
         List<String> referrals = jdbcTemplate.query("SELECT additionalReferrals FROM recruitList.infolist WHERE andrewid=?",
                 new Object[]{andrewid}, new AdditionalReferralRowMapper());
