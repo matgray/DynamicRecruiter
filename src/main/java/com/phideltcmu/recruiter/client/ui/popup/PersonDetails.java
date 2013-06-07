@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HTML;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
+import com.phideltcmu.recruiter.client.callback.StringCallback;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 import java.util.ArrayList;
@@ -41,7 +42,14 @@ public class PersonDetails extends HidablePopup {
         editNotes.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                new NotesAdder(person).display();
+                NotesAdder adder = new NotesAdder(person, new StringCallback() {
+                    @Override
+                    public void onStringReturned(String result) {
+                        ft.setWidget(1, 1, result == null ? new HTML("NONE") : new HTML(result));
+                        person.setNotes(result);
+                    }
+                });
+                adder.show();
             }
         });
 

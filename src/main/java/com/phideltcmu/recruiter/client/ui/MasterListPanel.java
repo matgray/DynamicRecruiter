@@ -60,6 +60,9 @@ public class MasterListPanel extends HorizontalPanel implements CategoriesPanelL
     @Override
     public void onCategoryPanelLoaded(CategoriesPanelLoadedEvent event) {
         categoriesPanel.setCategory("Brother", false);
+        categoriesPanel.setCategory("Ineligible", false);
+        categoriesPanel.setCategory("Deferred", false);
+        categoriesPanel.setCategory("Waitlist", false);
         lastCategories = CategoriesPanel.filterCategories(categoriesPanel.getCheckBooleanMap());
         DynamicRecruiter.RECRUIT_SERVICE.getRecruitList(lastCategories, new RecruitListLoadHandler());
         recruitTable.render(event.getCategoryList());

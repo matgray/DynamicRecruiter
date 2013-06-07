@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
+import com.phideltcmu.recruiter.client.callback.StringCallback;
 import com.phideltcmu.recruiter.shared.model.Person;
 
 public class NotesAdder extends HidablePopup {
@@ -21,7 +22,7 @@ public class NotesAdder extends HidablePopup {
     private Label title = new Label();
     final NotesAdder notesAdder = this;
 
-    public NotesAdder(final Person p) {
+    public NotesAdder(final Person p, final StringCallback callback) {
         super();
         title.setText("Notes For " + p.getFullName());
         title.setStyleName("oldenburg150");
@@ -49,6 +50,11 @@ public class NotesAdder extends HidablePopup {
                     public void onSuccess(Void aVoid) {
                         notesAdder.hide();
                         Window.alert("Notes Saved!");
+                        if (area.getText().length() == 0) {
+                            callback.onStringReturned(null);
+                        } else {
+                            callback.onStringReturned(area.getHTML());
+                        }
                     }
                 });
             }
