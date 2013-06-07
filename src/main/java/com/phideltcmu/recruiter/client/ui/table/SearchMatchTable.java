@@ -29,7 +29,7 @@ public class SearchMatchTable extends PersonTable {
         Column<Person, String> addButtonColumn = new Column<Person, String>(buttonCell) {
             @Override
             public String getValue(Person person) {
-                return "Add to list";
+                return person.getInTable() == true ? "Add Referral" : "Add to list";
             }
         };
 

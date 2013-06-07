@@ -18,6 +18,7 @@ public class Person implements Serializable {
     private String status = null;
     private String notes = null;
     private String originalReferrer = null;
+    private Boolean inTable = null;
 
     public Person() {
     }
@@ -111,5 +112,13 @@ public class Person implements Serializable {
 
     public void setOriginalReferrer(String originalReferrer) {
         this.originalReferrer = originalReferrer;
+    }
+
+    public Boolean getInTable() {
+        return inTable;
+    }
+
+    public void setInTable(Boolean inTable) {
+        this.inTable = inTable;
     }
 }

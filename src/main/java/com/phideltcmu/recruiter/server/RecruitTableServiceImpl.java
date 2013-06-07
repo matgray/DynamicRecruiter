@@ -59,7 +59,16 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
     @Override
     public List<Person> search(String text) {
         try {
-            return CmuLdap.getAttributes(text);
+            List<Person> matches = CmuLdap.getAttributes(text);
+            for (Person p : matches) {
+                if (recruitListDao.select(p.getAndrewID()) == null) {
+                    p.setInTable(false);
+                } else {
+                    p.setInTable(true);
+                }
+            }
+            return matches;
+
         } catch (LDAPException e) {
             e.printStackTrace();
         }

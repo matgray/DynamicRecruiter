@@ -19,7 +19,7 @@ public interface IDao {
 
     void create(String firstName, String lastName, String andrewID);
 
-    List<Person> select(String firstname, String lastname);
+    List<Person> select(String andrewId);
 
     List<Person> selectAll(List<Category> desiredCategories);
 

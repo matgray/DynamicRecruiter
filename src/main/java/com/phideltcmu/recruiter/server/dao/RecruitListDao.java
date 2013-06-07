@@ -41,8 +41,11 @@ public class RecruitListDao implements IDao {
     }
 
     @Override
-    public List<Person> select(String firstname, String lastname) {
-        return null;
+    public List<Person> select(String andrewID) {
+        checkSingleton();
+        List<Person> results = jdbcTemplate.query("SELECT * FROM recruitList.infolist WHERE andrewid=?",
+                new Object[]{andrewID}, new PersonRowMapper());
+        return results.size() == 0 ? null : results;
     }
 
     @Override
