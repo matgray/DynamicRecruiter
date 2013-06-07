@@ -49,7 +49,7 @@ public class PersonDetails extends HidablePopup {
                         person.setNotes(result);
                     }
                 });
-                adder.show();
+                adder.center();
             }
         });
 
