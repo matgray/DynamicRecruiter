@@ -104,7 +104,6 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
 
     @Override
     public void saveNotes(String andrewID, String notes, String token) {
-        ensureAdmin(token);
         recruitListDao.saveNotes(andrewID, notes);
     }
 
