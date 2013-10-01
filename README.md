@@ -5,9 +5,7 @@ This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAl
 DynamicRecruiter
 ================
 
-### Built for the Pennsylvania Rho Colony of Phi Delta Theta
-
-A web application for managing recruitment
+A web application for managing the recruitment of students at Carnegie Mellon University.  Accesses the CMU LDAP directory to make searching students easy, and gives admins easy control as to who is being recruited when.  Authenticates with Facebook, uses GWT, MySQL, Spring, and OpenID-LDAP.
 
 Maven Commands:
 ----------------
