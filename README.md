@@ -1,15 +1,19 @@
+Dynamic Recruiter
+================
+
 Copyright (c) 2013 Mathew Gray.
 
 This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
-DynamicRecruiter
-================
+What it is:
+-------------
 
-### Built for the Pennsylvania Rho Colony of Phi Delta Theta
+A web application for managing the recruitment of students at Carnegie Mellon University.  
+Allows for easy collaboration between recruiters to ensure that the organization is on the same page when
+it comes to who is being recruited.
+Accesses the CMU LDAP directory to make searching students eas.  Authenticates with Facebook OAuth.  Uses GWT, MySQL, Spring, and OpenID-LDAP.
 
-A web application for managing recruitment
-
-Maven Commands:
+Maven commands:
 ----------------
 
     mvn clean         # delete temporary stuff
