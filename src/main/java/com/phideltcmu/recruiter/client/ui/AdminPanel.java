@@ -12,6 +12,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
+import com.phideltcmu.recruiter.client.ui.popup.CategoryNameChooser;
 import com.phideltcmu.recruiter.client.ui.popup.LoadingPopup;
 
 public class AdminPanel extends VerticalPanel {
@@ -42,21 +43,21 @@ public class AdminPanel extends VerticalPanel {
             }
         });
         this.add(updateList);
-//        this.add(addCategoryButton);
-//        addCategoryButton.addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent clickEvent) {
-//                new CategoryNameChooser().display();
-//            }
-//        });
-//        this.add(addAdmin);
-//
-//        addAdmin.addClickHandler(new ClickHandler() {
-//            @Override
-//            public void onClick(ClickEvent clickEvent) {
-//                new AdminPanel();
-//            }
-//        });
+        this.add(addCategoryButton);
+        addCategoryButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                new CategoryNameChooser().display();
+            }
+        });
+        this.add(addAdmin);
+
+        addAdmin.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                new AdminPanel();
+            }
+        });
     }
 
 

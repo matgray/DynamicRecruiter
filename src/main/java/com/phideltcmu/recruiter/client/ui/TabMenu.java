@@ -51,11 +51,11 @@ public class TabMenu extends TabPanel {
         /**
          * Add an admin tab
          */
-//        if (DynamicRecruiter.authUser.isAdmin()) {
-//            AdminPanel adminPanel = new AdminPanel();
-//            HTML adminText = new HTML("Admin");
-//            this.add(adminPanel, adminText);
-//        }
+        if (DynamicRecruiter.authUser.isAdmin()) {
+            AdminPanel adminPanel = new AdminPanel();
+            HTML adminText = new HTML("Admin");
+            this.add(adminPanel, adminText);
+        }
 
         /**
          * Add a email tab if admin
@@ -74,9 +74,6 @@ public class TabMenu extends TabPanel {
                 int tabId = integerSelectionEvent.getSelectedItem();
                 if (tabId == 1) {
                     masterListPanel.refresh();
-                }
-                if (tabId == 3) {
-                    leaderboardPanel.refresh();
                 }
             }
         });

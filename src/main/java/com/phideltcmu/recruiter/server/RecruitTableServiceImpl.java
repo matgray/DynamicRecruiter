@@ -127,7 +127,6 @@ public class RecruitTableServiceImpl extends RemoteServiceServlet implements
 
     @Override
     public String setPhoneNumber(String andrewID, String number, String token) {
-//        ensureAdmin(token);
         number = number.replaceAll("\\D+", "");
         if (number.length() != 10 && number.length() != 0) {
             throw new IllegalStateException("Illegal Number");

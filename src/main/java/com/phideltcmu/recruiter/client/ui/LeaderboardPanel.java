@@ -6,16 +6,13 @@
 package com.phideltcmu.recruiter.client.ui;
 
 import com.google.gwt.user.cellview.client.CellTable;
-import com.google.gwt.user.cellview.client.ColumnSortEvent;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.view.client.ListDataProvider;
 import com.phideltcmu.recruiter.client.DynamicRecruiter;
 import com.phideltcmu.recruiter.client.event.StatsFetchedEvent;
 import com.phideltcmu.recruiter.client.event.StatsFetchedEventHandler;
 import com.phideltcmu.recruiter.shared.model.InternalUserStat;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class LeaderboardPanel extends CellTable<InternalUserStat> implements StatsFetchedEventHandler {
@@ -42,6 +39,7 @@ public class LeaderboardPanel extends CellTable<InternalUserStat> implements Sta
         };
         this.addColumn(nameColumn, "Brother");
         this.addColumn(uniqueAdditionsColumn, "Unique Additions");
+        refresh();
     }
 
     public void refresh() {
@@ -60,29 +58,7 @@ public class LeaderboardPanel extends CellTable<InternalUserStat> implements Sta
 
     @Override
     public void onStatsFetched(StatsFetchedEvent event) {
-
-        /**
-         * Enable sorting by last name
-         */
-        ListDataProvider<InternalUserStat> dataProvider = new ListDataProvider<InternalUserStat>();
-        dataProvider.addDataDisplay(this);
-
-        List<InternalUserStat> dataProviderList = event.getStats();
-
-        ColumnSortEvent.ListHandler<InternalUserStat> lastNameSortHandler =
-                new ColumnSortEvent.ListHandler<InternalUserStat>(dataProviderList);
-        lastNameSortHandler.setComparator(uniqueAdditionsColumn, new Comparator<InternalUserStat>() {
-            @Override
-            public int compare(InternalUserStat o1, InternalUserStat o2) {
-                int x = o1.getUniqueAdditions();
-                int y = o2.getUniqueAdditions();
-                return (x < y) ? -1 : ((x == y) ? 0 : 1);
-            }
-        });
-        this.addColumnSortHandler(lastNameSortHandler);
-        this.getColumn(1).setSortable(true);
-        this.setRowData(0, dataProviderList);
-        this.getColumnSortList().push(uniqueAdditionsColumn);
-        ColumnSortEvent.fire(this, this.getColumnSortList());
+        this.setRowData(0, event.getStats());
+        this.setVisibleRange(0, event.getStats().size());
     }
 }

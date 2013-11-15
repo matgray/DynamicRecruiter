@@ -246,7 +246,7 @@ public class RecruitListDao implements IDao {
     @Override
     public List<InternalUserStat> getStats() {
         checkSingleton();
-        List<InternalUserStat> posAdditions = jdbcTemplate.query("SELECT referredBy, COUNT(*) FROM recruitList.infolist GROUP BY referredBy",
+        List<InternalUserStat> posAdditions = jdbcTemplate.query("SELECT referredBy, COUNT(*) FROM recruitList.infolist GROUP BY referredBy ORDER BY COUNT(*) DESC",
                 new StatCountRowMapper());
 
         List<InternalUserStat> zeroAdditons = jdbcTemplate.query("SELECT id FROM recruitList.userList",
